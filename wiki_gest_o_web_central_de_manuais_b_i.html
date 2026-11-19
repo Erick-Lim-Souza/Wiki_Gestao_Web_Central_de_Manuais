@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Gestão Web – Central de Manuais B.I.</title>
+
+    <!-- Tipografia Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        wiki: {
+                            bg: '#0B0F14',
+                            surface: '#111827',
+                            card: '#161E29',
+                            border: '#1F2937',
+                            neon: '#00E676',
+                            neonHover: '#22C55E',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- jsPDF para fallback inteligente e geração de PDFs formatados -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-[#0B0F14] dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-[#00E676]/20 selection:text-[#00E676]">
+
+    <!-- ================= CABEÇALHO PRINCIPAL ================= -->
+    <header class="sticky top-0 z-30 bg-white/90 dark:bg-[#0B0F14]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1F2937]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center justify-between gap-3 py-3.5">
+                
+                <!-- Marca Wiki Gestão Web -->
+                <button type="button" onclick="goHome()" class="flex items-center gap-3 text-left group focus:outline-none">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 dark:bg-[#00E676]/15 border border-emerald-500/30 dark:border-[#00E676]/40 text-white dark:text-[#00E676] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white">Wiki Gestão Web</span>
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 dark:bg-[#00E676]/15 dark:text-[#00E676] border border-emerald-200 dark:border-[#00E676]/30">B.I.</span>
+                        </div>
+                        <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400">Central de Manuais &amp; Passo a Passo</p>
+                    </div>
+                </button>
+
+                <!-- Ações do Cabeçalho -->
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <!-- Botão Gerenciar / Subir PDFs -->
+                    <button
+                        type="button"
+                        onclick="openPdfManagerModal()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#22C55E] text-white dark:text-[#0B0F14] text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <span class="hidden sm:inline">Gerenciar / Subir PDFs</span>
+                        <span class="sm:hidden">PDFs</span>
+                        <span id="uploadedPdfCounterBadge" class="hidden px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-black/20 dark:bg-[#0B0F14]/20">0</span>
+                    </button>
+
+                    <!-- Botão Alternar Dark / Light Mode -->
+                    <button
+                        type="button"
+                        id="themeToggleBtn"
+                        onclick="toggleTheme()"
+                        class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#161E29] dark:hover:bg-[#1F2937] border border-slate-200 dark:border-[#1F2937] text-slate-700 dark:text-slate-200 transition-colors"
+                        title="Alternar tema Claro / Escuro"
+                        aria-label="Alternar tema Claro / Escuro"
+                    >
+                        <!-- Ícone Sol (mostrado no Dark Mode) -->
+                        <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                        </svg>
+                        <!-- Ícone Lua (mostrado no Light Mode) -->
+                        <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= VIEW 1: CATÁLOGO DE MANUAIS ================= -->
+    <main id="catalogView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Hero & Busca Global -->
+        <section class="mb-8 rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-6 sm:p-8 shadow-sm relative overflow-hidden">
+            <!-- Brilho sutil neon no dark mode -->
+            <div class="hidden dark:block pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#00E676]/10 blur-3xl"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-[#00E676]/10 border border-emerald-200 dark:border-[#00E676]/25 text-emerald-700 dark:text-[#00E676] text-xs font-semibold mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#00E676] animate-pulse"></span>
+                        Versão 1 • Novembro de 2026 • Permissão OUT11
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+                        Manuais de Uso &amp; Suporte — Telas de B.I.
+                    </h1>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Consulte o passo a passo completo de cada painel, tire dúvidas frequentes de clientes, acompanhe roteiros práticos ou baixe o manual em PDF.
+                    </p>
+                </div>
+
+                <!-- Indicadores Rápidos -->
+                <div class="flex items-center gap-3 shrink-0">
+                    <div class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] text-center min-w-[100px]">
+                        <div class="text-xl font-extrabold text-emerald-600 dark:text-[#00E676]">8</div>
+                        <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">Manuais B.I.</div>
+                    </div>
+                    <div class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] text-center min-w-[100px]">
+                        <div id="globalPracticeStat" class="text-xl font-extrabold text-slate-900 dark:text-white">0%</div>
+                        <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">Prática Geral</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Busca Global Inteligente -->
+            <div class="relative z-10 mt-6">
+                <div class="relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                    </div>
+                    <input
+                        type="text"
+                        id="globalSearchInput"
+                        autocomplete="off"
+                        placeholder="Pesquisar telas, filtros, gráficos ou dúvidas de clientes (ex: OUT11, Curva ABC, FIN49, bonificação, giro)..."
+                        class="w-full pl-12 pr-12 py-3.5 rounded-xl bg-slate-100 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#1F2937] focus:border-emerald-500 dark:focus:border-[#00E676] focus:ring-4 focus:ring-emerald-500/10 dark:focus:ring-[#00E676]/15 text-sm sm:text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
+                    >
+                    <button
+                        type="button"
+                        id="clearGlobalSearchBtn"
+                        onclick="clearGlobalSearch()"
+                        class="hidden absolute inset-y-0 right-0 items-center pr-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        aria-label="Limpar busca"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros por Módulo -->
+        <section class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div id="moduleFilterTabs" class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filtrar por módulo">
+                <!-- Renderizado via JS -->
+            </div>
+            <div id="catalogCounter" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Exibindo 8 manuais
+            </div>
+        </section>
+
+        <!-- Grade de Cards dos 8 Manuais -->
+        <section id="manualsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Cards renderizados via JS -->
+        </section>
+
+        <!-- Estado Vazio de Busca -->
+        <section id="catalogEmptyState" class="hidden text-center py-16 px-6 rounded-2xl bg-white dark:bg-[#161E29] border border-dashed border-slate-300 dark:border-[#1F2937]">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 dark:bg-[#111827] text-slate-400 flex items-center justify-center">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Nenhum manual encontrado</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-5">
+                Não encontramos correspondências nos capítulos ou nas dúvidas comuns para sua busca atual.
+            </p>
+            <button type="button" onclick="resetCatalogFilters()" class="px-4 py-2 rounded-xl bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] text-sm font-bold transition-colors">
+                Limpar filtros
+            </button>
+        </section>
+    </main>
+
+    <!-- ================= VIEW 2: LEITURA DO MANUAL (TELA CHEIA) ================= -->
+    <div id="readerView" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col lg:flex-row gap-6 items-start">
+
+            <!-- Sidebar Esquerda Fixa (Sumário + Voltar) -->
+            <aside class="w-full lg:w-72 shrink-0 lg:sticky lg:top-24 space-y-4">
+                <button
+                    type="button"
+                    onclick="goHome()"
+                    class="w-full inline-flex items-center justify-center lg:justify-start gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-[#161E29] hover:bg-slate-100 dark:hover:bg-[#1F2937] border border-slate-200 dark:border-[#1F2937] text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Voltar ao Catálogo
+                </button>
+
+                <!-- Card de Sumário -->
+                <div class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-4 shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Sumário do Manual</span>
+                        <span id="readerNumBadge" class="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">01</span>
+                    </div>
+                    <nav id="readerTocNav" class="space-y-1 max-h-[50vh] overflow-y-auto pr-1 text-sm">
+                        <!-- Links do sumário via JS -->
+                    </nav>
+
+                    <!-- Ação Rápida de PDF na Sidebar -->
+                    <div class="mt-4 pt-4 border-t border-slate-200 dark:border-[#1F2937] space-y-2">
+                        <button
+                            type="button"
+                            id="sidebarDownloadPdfBtn"
+                            class="w-full inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#22C55E] text-white dark:text-[#0B0F14] text-xs font-bold shadow-sm transition-all active:scale-95"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                            Baixar PDF deste Manual
+                        </button>
+                        <div id="sidebarPdfStatus" class="text-[11px] text-center text-slate-500 dark:text-slate-400">
+                            <!-- Status do PDF -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Conteúdo Principal da Leitura -->
+            <div class="flex-1 min-w-0 w-full space-y-5">
+                
+                <!-- Cabeçalho do Manual -->
+                <div class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-7 shadow-sm">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span id="readerModuleBadge" class="px-2.5 py-1 rounded-full text-xs font-bold">Módulo</span>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-mono font-semibold bg-slate-100 dark:bg-[#111827] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1F2937]">
+                            Permissão: OUT11
+                        </span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400">Versão 1 • Nov/2026</span>
+                    </div>
+                    <h1 id="readerTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">
+                        Título do Manual
+                    </h1>
+                    <p id="readerSummary" class="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Resumo do manual.
+                    </p>
+
+                    <!-- Abas de Navegação do Manual -->
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-[#1F2937] flex flex-wrap items-center gap-2" role="tablist">
+                        <button type="button" onclick="switchReaderTab('guide')" id="tabBtn-guide" class="reader-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                            Passo a Passo Completo
+                        </button>
+                        <button type="button" onclick="switchReaderTab('faq')" id="tabBtn-faq" class="reader-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                            Dúvidas Comuns (Suporte)
+                            <span id="faqCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-md text-[10px]">0</span>
+                        </button>
+                        <button type="button" onclick="switchReaderTab('practice')" id="tabBtn-practice" class="reader-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                            Roteiro Prático
+                            <span id="practicePctBadge" class="ml-1.5 px-1.5 py-0.5 rounded-md text-[10px]">0%</span>
+                        </button>
+                        <button type="button" onclick="switchReaderTab('pdf')" id="tabBtn-pdf" class="reader-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all">
+                            Visualizar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ABA 1: PASSO A PASSO COMPLETO -->
+                <div id="tabPanel-guide" class="space-y-5">
+                    <!-- Injetado dinamicamente -->
+                </div>
+
+                <!-- ABA 2: DÚVIDAS COMUNS (FAQ SUPORTE) -->
+                <div id="tabPanel-faq" class="hidden space-y-4">
+                    <div class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Dúvidas Comuns dos Clientes</h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Respostas rápidas e verificações para a equipe de suporte.</p>
+                            </div>
+                            <div class="relative w-full sm:w-72">
+                                <input
+                                    type="text"
+                                    id="faqLocalSearch"
+                                    placeholder="Filtrar dúvida neste manual..."
+                                    oninput="renderFaqList()"
+                                    class="w-full pl-3.5 pr-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#1F2937] focus:border-emerald-500 dark:focus:border-[#00E676] text-xs sm:text-sm text-slate-900 dark:text-white outline-none"
+                                >
+                            </div>
+                        </div>
+                        <div id="faqListContainer" class="space-y-3">
+                            <!-- Acordeões FAQ via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA 3: ROTEIRO PRÁTICO INTERATIVO -->
+                <div id="tabPanel-practice" class="hidden space-y-4">
+                    <div class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Roteiro para Praticar</h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Execute numa base de teste e marque cada etapa concluída. O progresso fica salvo no navegador.</p>
+                            </div>
+                            <button type="button" onclick="resetCurrentPractice()" class="self-start sm:self-auto px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#1F2937] hover:bg-slate-100 dark:hover:bg-[#1F2937] text-xs font-semibold text-slate-600 dark:text-slate-300 transition-colors">
+                                Reiniciar Checklist
+                            </button>
+                        </div>
+
+                        <!-- Barra de Progresso -->
+                        <div class="mb-5 p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                            <div class="flex items-center justify-between text-xs font-bold mb-2">
+                                <span id="practiceProgressText" class="text-slate-700 dark:text-slate-200">0 de 0 passos concluídos</span>
+                                <span id="practiceProgressPercent" class="text-emerald-600 dark:text-[#00E676]">0%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-200 dark:bg-[#1F2937] rounded-full overflow-hidden">
+                                <div id="practiceProgressBar" class="h-full bg-emerald-500 dark:bg-[#00E676] rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div id="practiceChecklistContainer" class="space-y-2.5">
+                            <!-- Checkboxes via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA 4: VISUALIZAR PDF -->
+                <div id="tabPanel-pdf" class="hidden space-y-4">
+                    <div id="pdfViewerWrapper" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                        <!-- Conteúdo dinâmico do visualizador de PDF -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: GERENCIAR / SUBIR PDFs ================= -->
+    <div id="pdfManagerModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="pdfManagerTitle">
+        <div class="fixed inset-0 bg-black/70 backdrop-blur-xs" onclick="closePdfManagerModal()"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto p-3 sm:p-6 flex items-start justify-center">
+            <div class="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] shadow-2xl my-4 sm:my-8 overflow-hidden flex flex-col max-h-[90vh]">
+                
+                <!-- Cabeçalho Modal -->
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-[#1F2937] flex items-center justify-between">
+                    <div>
+                        <h2 id="pdfManagerTitle" class="text-lg font-extrabold text-slate-900 dark:text-white">Gerenciar &amp; Vincular PDFs Oficiais</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Anexe os arquivos .pdf locais para testar a visualização embutida e o download agora mesmo.</p>
+                    </div>
+                    <button type="button" onclick="closePdfManagerModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1F2937] transition-colors" aria-label="Fechar modal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Corpo do Modal -->
+                <div class="overflow-y-auto p-6 space-y-6">
+                    
+                    <!-- Área de Drag & Drop -->
+                    <div
+                        id="pdfDropZone"
+                        class="rounded-2xl border-2 border-dashed border-slate-300 dark:border-[#1F2937] hover:border-emerald-500 dark:hover:border-[#00E676] bg-slate-50 dark:bg-[#111827] p-6 text-center transition-colors cursor-pointer"
+                        onclick="document.getElementById('bulkPdfInput').click()"
+                    >
+                        <input type="file" id="bulkPdfInput" accept="application/pdf,.pdf" multiple class="hidden" onchange="handleBulkPdfFiles(this.files)">
+                        <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-600 dark:text-[#00E676] flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm font-bold text-slate-800 dark:text-white">Arraste seus arquivos .pdf aqui ou clique para selecionar</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                            Detecção automática pelo número (<span class="font-mono">01</span> a <span class="font-mono">08</span>) ou nome do arquivo (ex: <span class="font-mono">01 - BI Analise de Vendas...pdf</span>).
+                        </p>
+                    </div>
+
+                    <!-- Lista de Vínculos dos 8 Manuais -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Status dos 8 Manuais</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">Fallback automático via jsPDF ativo</span>
+                        </div>
+                        <div id="pdfManagerList" class="space-y-2">
+                            <!-- Renderizado via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Guia de Estrutura de Pastas para Hospedagem Estática -->
+                    <div class="rounded-xl bg-slate-900 dark:bg-[#0B0F14] border border-slate-800 dark:border-[#1F2937] p-4 text-slate-200">
+                        <div class="flex items-center justify-between gap-2 mb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-[#00E676]"></span>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-white">Estrutura para Hospedagem Estática (Servidor / Netlify / IIS)</h4>
+                            </div>
+                            <button type="button" onclick="copyFolderStructure()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-semibold text-[#00E676] transition-colors">
+                                Copiar Caminhos
+                            </button>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3">
+                            Ao publicar este site, coloque os 8 PDFs convertidos dentro de uma pasta chamada <code class="text-[#00E676] font-mono">pdfs/</code> ao lado do <code class="text-[#00E676] font-mono">index.html</code>. O portal carregará e baixará os arquivos oficiais automaticamente:
+                        </p>
+                        <pre id="folderStructurePre" class="text-[11px] sm:text-xs font-mono text-emerald-300/90 bg-black/40 p-3 rounded-lg overflow-x-auto leading-relaxed"></pre>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= RODAPÉ ================= -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-[#1F2937] bg-white dark:bg-[#0B0F14]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-800 dark:text-white">Wiki Gestão Web</span>
+                <span>•</span>
+                <span>Central de Manuais B.I. (Permissão OUT11)</span>
+            </div>
+            <div>Documentação Técnica para Equipe de Suporte &amp; Clientes</div>
+        </div>
+    </footer>
+
+    <!-- ================= TOAST NOTIFICATIONS ================= -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 max-w-sm w-[calc(100%-2.5rem)] pointer-events-none"></div>
+
+    <!-- ================= SCRIPT DA APLICAÇÃO ================= -->
+    <script>
+        /**
+         * BASE DE DADOS COMPLETA DOS 8 MANUAIS REAIS DA WIKI GESTÃO WEB (B.I.)
+         */
+        const MANUALS = [
+            {
+                num: '01',
+                id: 'bi-analise-vendas',
+                title: 'B.I – Análise de Vendas',
+                module: 'Comercial & Vendas',
+                pdfPath: 'pdfs/01 - BI Analise de Vendas - Passo a passo.pdf',
+                pdfName: '01 - BI Analise de Vendas - Passo a passo.pdf',
+                keywords: ['vendas', 'ticket', 'canal', 'estado', 'uf', 'cidade', 'bonificacao', 'dashboard'],
+                summary: 'Mostra em uma única tela quanto a empresa vendeu, quantos pedidos e clientes teve, onde (estado e cidade) e por qual canal — direto do sistema, sempre atualizado.',
+                access: 'Dashboard > Power BI > B.I > Análise de Vendas',
+                permission: 'OUT11',
+                audience: 'Dono da empresa, gerente comercial e financeiro, para acompanhar o resultado do mês, preparar reuniões e comparar períodos.',
+                questionsAnswered: [
+                    'Quanto vendemos neste mês e como isso se compara com o mesmo mês do ano passado?',
+                    'Qual o ticket médio por pedido e por peça?',
+                    'Quais estados e cidades mais compram?',
+                    'Quanto veio de cada canal de venda (balcão, WhatsApp, Instagram etc.)?',
+                    'Como as vendas estão distribuídas entre as filiais?'
+                ],
+                overview: [
+                    'Coluna de filtros, à esquerda. Começa recolhida e abre pela aba "▶ Filtros".',
+                    'Cabeçalho, com o nome da tela, o período consultado e o botão Menu.',
+                    'Barra "Comparar com" e os 7 cards de números (indicadores).',
+                    'Gráficos do meio: evolução das vendas, ranking por estado e mapa.',
+                    'Gráficos de baixo: vendas por canal e Top Cidades.'
+                ],
+                filters: [
+                    { name: 'Ano', desc: 'Ano das vendas. A tela abre no ano atual.', note: '"Todos os anos" mostra desde a primeira venda e bloqueia o campo Mês.' },
+                    { name: 'Mês', desc: 'Mês das vendas. A tela abre no mês atual.', note: '"Todos os meses" mostra o ano inteiro.' },
+                    { name: 'Datas', desc: 'Intervalo livre (data inicial e final).', note: 'Quando preenchidas, substituem Ano e Mês. Intervalo máximo de 5 anos.' },
+                    { name: 'Filial', desc: 'Empresa das vendas.', note: 'Logado na matriz, abre em "Todas as filiais". Logado numa filial, abre na própria filial.' },
+                    { name: 'Vendedor', desc: 'Vendas de um vendedor.', note: 'Se o usuário logado for vendedor, ele vê somente as próprias vendas, qualquer que seja a escolha.' },
+                    { name: 'UF do cliente', desc: 'Estado do cliente.', note: 'Usa o endereço principal do cadastro do cliente, e não o endereço de entrega.' },
+                    { name: 'Canal de venda', desc: 'Canal do pedido.', note: '"Sem canal de venda" = pedidos sem canal informado ou com canal removido do cadastro.' }
+                ],
+                dataRules: [
+                    'Data: data de cadastro do pedido.',
+                    'Valor: valor líquido do pedido (com descontos e acréscimos). Pedidos com valor zero ficam de fora.',
+                    'Situação: pedidos Devolvidos e Cancelados não entram. Entram Aberto, Acerto Parcial, Concluído, Em Crediário, Em Análise etc.',
+                    'Tipo de operação: entram Venda, Consignado, Troca, E-Commerce, Representação, Prestação de Serviço e Crediário (e sem tipo informado). Não entram: Bonificação, Devolução, Locação e Reserva.',
+                    'Peças: soma das quantidades da grade dos pedidos.'
+                ],
+                dataRuleNote: 'Se o cliente comparar com um relatório que usa outra data (faturamento/emissão da nota) ou valor bruto, os números podem diferir, e isso é esperado.',
+                cards: [
+                    { name: 'TOTAL VENDAS', desc: 'Quanto foi vendido.', calc: 'Soma do valor líquido dos pedidos.' },
+                    { name: 'QTD. ITENS', desc: 'Quantas peças foram vendidas.', calc: 'Soma das quantidades da grade dos pedidos.' },
+                    { name: 'TICKET MÉDIO', desc: 'Valor médio de cada pedido.', calc: 'Total vendas ÷ Qtd. pedidos.' },
+                    { name: 'TICKET MÉDIO PEÇAS', desc: 'Valor médio de cada peça.', calc: 'Total vendas ÷ Qtd. itens.' },
+                    { name: 'MÉDIA DIÁRIA', desc: 'Venda média por dia.', calc: 'Total vendas ÷ dias corridos do período (se em andamento, conta só até hoje).' },
+                    { name: 'QTD. PEDIDOS', desc: 'Quantos pedidos foram feitos.', calc: 'Contagem dos pedidos.' },
+                    { name: 'TOTAL CLIENTES', desc: 'Quantos clientes diferentes compraram.', calc: 'Um cliente que comprou 5 vezes conta 1.' }
+                ],
+                comparisonNote: 'Barra "Comparar com": Ano anterior (12 meses antes) ou Período anterior. Verde = melhorou; vermelho = piorou. No mês em andamento compara só até hoje. Com "Todos os anos" não há comparação.',
+                charts: [
+                    {
+                        title: 'Visão geral do total vendido',
+                        shows: 'Evolução do valor vendido ao longo do período, em barras.',
+                        purpose: 'Identificar quedas, picos e comparar desempenho entre filiais (botão Visão Geral | Total por Filial).',
+                        howToRead: 'Até 62 dias = 1 barra por dia. De 63 dias a 3 anos = 1 barra por mês. Mais de 3 anos ou "Todos os anos" = 1 barra por ano.'
+                    },
+                    {
+                        title: 'Ranking de Vendas por Estados',
+                        shows: 'Barras com o total vendido por estado (UF), do maior para o menor.',
+                        purpose: 'Identificar estados com maior faturamento ou oportunidades de expansão.',
+                        howToRead: 'Usa a UF do endereço principal do cliente. Sem endereço ou sem UF aparece como "SEM UF".'
+                    },
+                    {
+                        title: 'Vendas por Estado (Mapa)',
+                        shows: 'Mapa do Brasil com intensidade de cor proporcional ao volume vendido.',
+                        purpose: 'Visualização geográfica rápida por estado. Possui botão ECharts | Google (os números não mudam).',
+                        howToRead: 'Clicar em um estado aplica o mesmo filtro cruzado do ranking.'
+                    },
+                    {
+                        title: 'Vendas por Canal de Venda',
+                        shows: 'Resultado por canal (balcão, WhatsApp, Instagram, site etc.).',
+                        purpose: 'Avaliar canais mais rentáveis e acompanhar crescimento de novos canais.',
+                        howToRead: 'Use o botão Valor | Qtd. pedidos. "Sem canal de venda" reúne pedidos sem canal informado.'
+                    },
+                    {
+                        title: 'Top Cidades',
+                        shows: 'As 15 cidades que mais compraram no período no formato "CIDADE - UF".',
+                        purpose: 'Mapear praças estratégicas e planejar ações comerciais regionais.',
+                        howToRead: 'Baseado no endereço principal. Para ver todas as cidades no mapa com lista de clientes, use a tela Geolocalização.'
+                    }
+                ],
+                crossFilter: 'Clicar em qualquer item de um gráfico (mês, UF, canal ou cidade) cria etiquetas "Filtrado por:" acima dos cards e recalcula toda a tela. O clique NÃO altera os campos da coluna lateral de filtros — para limpar, clique novamente no item, no "×" da etiqueta ou em "limpar seleção".',
+                dailyUse: [
+                    { title: 'Fechamento do mês', objective: 'Avaliar o resultado consolidado do mês encerrado.', steps: ['Filtre o mês encerrado e clique em Filtrar.', 'Leia Total vendas, Qtd. pedidos e Ticket médio.', 'Compare com Ano anterior e depois com Período anterior.', 'Analise Vendas por Canal e Ranking por Estados.'] },
+                    { title: 'Acompanhar o mês em andamento', objective: 'Verificar o ritmo atual e projeção de fechamento.', steps: ['Abra a tela (já carrega no mês atual).', 'Confira a Média diária e os dias contados no rodapé do card.', 'Multiplique a média diária pelos dias do mês para estimar o fechamento.', 'Observe a variação ▲▼ contra o ano passado.'] },
+                    { title: 'Avaliar uma região ou um canal', objective: 'Isolar o desempenho de um estado, cidade ou canal.', steps: ['Escolha o período e clique em Filtrar.', 'Clique na UF, cidade ou canal desejado nos gráficos.', 'Leia os cards recalculados e a evolução mensal.', 'Clique em "limpar seleção" para voltar ao total.'] }
+                ],
+                faq: [
+                    { q: 'O valor está diferente da tela inicial (Dashboard).', a: 'A regra de pedido é a mesma, mas os períodos diferem: na tela inicial, "6 meses" considera os 5 meses anteriores + mês atual até hoje; aqui o padrão é o mês atual. Coloque o mesmo intervalo em Datas para comparar.' },
+                    { q: 'Vendi uma bonificação e ela não aparece.', a: 'Bonificação, Devolução, Locação e Reserva não contam como venda nesta tela (nem no Dashboard inicial). Pedidos Devolvidos ou Cancelados também ficam de fora.' },
+                    { q: 'O valor está diferente do relatório X.', a: 'Confira se o relatório comparado usa a mesma data (cadastro do pedido) e o mesmo valor (líquido).' },
+                    { q: 'Os números estão menores do que deveriam.', a: 'Verifique se há etiquetas "Filtrado por" ativas acima dos cards, além de filial, vendedor, UF e canal. Usuários vendedores só veem as próprias vendas.' },
+                    { q: 'Aparece SEM UF / SEM CIDADE.', a: 'São clientes sem endereço principal ou com endereço incompleto no cadastro. Corrigindo o cadastro, eles passam para o local correto.' },
+                    { q: 'A média diária do mês atual está estranha.', a: 'No mês em andamento, ela divide pelo número de dias corridos até hoje, e não pelos 30 dias do mês.' },
+                    { q: 'A comparação (▲▼) sumiu.', a: 'Com "Todos os anos" selecionado não existe período anterior para comparar.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta liberar a permissão OUT11 no cadastro do usuário.' },
+                    { q: 'O mapa não mostra bairros como no Power BI.', a: 'O sistema não guarda latitude e longitude dos clientes. Por isso o mapa é por estado; para detalhes por cidade, use a tela Geolocalização.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Total vendas do mês atual.',
+                    'Troque o botão "Comparar com" entre Ano anterior e Período anterior e veja a variação mudar.',
+                    'Abra os filtros, escolha "Todos os meses" e clique em Filtrar. Veja o gráfico de evolução passar a mostrar uma barra por mês.',
+                    'Clique em um mês no gráfico de evolução. Confira a etiqueta "Filtrado por" e os cards recalculados.',
+                    'Clique também em uma UF e depois em um canal. Veja as três etiquetas juntas.',
+                    'Clique em "limpar seleção" e confirme que os números voltaram aos do passo 3.',
+                    'Troque o gráfico de canal para "Qtd. pedidos" e confira que a soma bate com o card QTD. PEDIDOS.'
+                ]
+            },
+            {
+                num: '02',
+                id: 'bi-geolocalizacao',
+                title: 'B.I – Geolocalização',
+                module: 'Comercial & Vendas',
+                pdfPath: 'pdfs/02 - BI Geolocalizacao - Passo a passo.pdf',
+                pdfName: '02 - BI Geolocalizacao - Passo a passo.pdf',
+                keywords: ['mapa', 'cidade', 'bolha', 'ibge', 'rota', 'visita', 'telefone', 'bairro', 'carteira'],
+                summary: 'Exibe no mapa do Brasil onde estão os clientes que compraram com bolhas proporcionais por cidade, lista de contatos ao passar o mouse e apoio para rotas comerciais.',
+                access: 'Dashboard > Power BI > B.I > Geolocalização',
+                permission: 'OUT11',
+                audience: 'Gerente comercial, vendedores e representantes, para planejar visitas, rotas e campanhas regionais.',
+                questionsAnswered: [
+                    'Em quais cidades estão os clientes que mais compram?',
+                    'Quantos clientes e pedidos tivemos em uma cidade?',
+                    'Quem são os clientes de uma cidade e como falar com eles (telefone e bairro)?',
+                    'Em quais regiões quase não vendemos?',
+                    'Como está a carteira de um vendedor ou representante no mapa?'
+                ],
+                overview: [
+                    'Coluna de filtros, à esquerda (recolhida por padrão em "▶ Filtros").',
+                    'Cabeçalho com nome da tela, período consultado e botão Menu.',
+                    'Resumo com barra "Comparar com" e 4 números (Total vendido, Clientes, Pedidos e Cidades).',
+                    'Mapa do Brasil interativo e, abaixo, aviso de cidades sem localização (quando houver).'
+                ],
+                filters: [
+                    { name: 'Data', desc: 'Intervalo livre (data inicial e final).', note: 'Quando preenchida, substitui Mês e Ano.' },
+                    { name: 'Mês', desc: 'Mês das vendas (abre no mês atual).', note: '"Todos os meses" mostra o ano inteiro.' },
+                    { name: 'Ano', desc: 'Ano das vendas (abre no ano atual).', note: '"Todos os anos" mostra desde a primeira venda e bloqueia Mês.' },
+                    { name: 'Filial', desc: 'Empresa das vendas.', note: 'Matriz abre em "Todas as filiais"; filial abre na própria.' },
+                    { name: 'Vendedor', desc: 'Vendas de um vendedor.', note: 'Usuário vendedor vê somente as próprias vendas.' },
+                    { name: 'UF', desc: 'Estado do cliente.', note: 'Também limita a busca do filtro Cidade àquele estado.' },
+                    { name: 'Cliente', desc: 'Filtra um cliente específico.', note: 'Campo de busca: digite pelo menos 2 letras do nome.' },
+                    { name: 'Cidade', desc: 'Filtra uma cidade específica.', note: 'Campo de busca: respeita a UF selecionada. Não há filtro de Canal de venda nesta tela.' }
+                ],
+                dataRules: [
+                    'Mesma regra de pedidos da Análise de Vendas e do Dashboard inicial (data de cadastro, valor líquido > 0, sem Devolvidos e Cancelados).',
+                    'Operações válidas: Venda, Consignado, Troca, E-Commerce, Representação, Prestação de Serviço e Crediário.',
+                    'Cidade e UF vêm do endereço principal do cadastro do cliente, e não do endereço de entrega.'
+                ],
+                dataRuleNote: 'Com o mesmo período, filial e vendedor (e sem filtro de cliente/cidade), o Total vendido desta tela é idêntico ao Total vendas da Análise de Vendas.',
+                cards: [
+                    { name: 'Total vendido', desc: 'Quanto foi vendido.', calc: 'Soma do valor líquido dos pedidos.' },
+                    { name: 'Clientes', desc: 'Clientes diferentes que compraram.', calc: 'Um cliente que comprou várias vezes conta 1.' },
+                    { name: 'Pedidos', desc: 'Quantidade de pedidos.', calc: 'Contagem dos pedidos.' },
+                    { name: 'Cidades', desc: 'Em quantas cidades houve venda.', calc: 'Cidades com pelo menos 1 venda (com cidade destacada, mostra 1).' }
+                ],
+                comparisonNote: 'Comparação ▲/▼ (Ano anterior / Período anterior) funciona no total geral ou isoladamente quando uma cidade é destacada no mapa.',
+                charts: [
+                    {
+                        title: 'Mapa de vendas por cidade',
+                        shows: 'Mapa do Brasil com uma bolha por cidade. As Top 5 cidades aparecem com nome e efeito pulsante.',
+                        purpose: 'Identificar concentração de vendas, regiões descobertas e área de atuação de vendedores.',
+                        howToRead: 'Use a roda do mouse para zoom e arraste para mover. Quanto maior a bolha, maior o faturamento.'
+                    },
+                    {
+                        title: 'Clientes da cidade (passando o mouse)',
+                        shows: 'Popup com totais da cidade e lista completa dos clientes compradores.',
+                        purpose: 'Obter telefone, bairro, total comprado e data da última compra para visitas e contatos.',
+                        howToRead: 'Vários clientes = tabela rolável. Apenas 1 cliente = ficha completa (CNPJ/CPF, e-mail, endereço, vendedor, ticket médio, 1ª e última compra). Fica em cache após o 1º carregamento.'
+                    },
+                    {
+                        title: 'Destacar uma cidade (clique)',
+                        shows: 'Bolha selecionada fica laranja com o nome e o resumo mostra só os números dela.',
+                        purpose: 'Analisar e comparar uma cidade específica sem perder a visão do mapa.',
+                        howToRead: 'Cria etiqueta "Filtrado por: Cidade". Clique novamente na bolha, no "×" ou em Limpar para remover.'
+                    },
+                    {
+                        title: 'Aviso de cidades sem localização',
+                        shows: 'Barra abaixo do mapa: "X cidade(s) sem localização no mapa" com valor total e lista expansível.',
+                        purpose: 'Auditar cadastros com nome de cidade divergente do IBGE ou sem endereço.',
+                        howToRead: 'Essas vendas continuam somando normalmente nos cards do resumo; basta corrigir o cadastro principal do cliente.'
+                    }
+                ],
+                crossFilter: 'Clicar em uma bolha destaca a cidade em laranja e filtra os 4 números do resumo (e a comparação ▲/▼) sem alterar os campos da coluna lateral de filtros.',
+                dailyUse: [
+                    { title: 'Planejar uma visita ou rota', objective: 'Listar quem visitar numa região.', steps: ['Escolha um período maior (ex: Todos os meses) e clique em Filtrar.', 'Dê zoom na região e passe o mouse nas bolhas.', 'Anote clientes, telefones, bairros e priorize quem tem data de última compra mais antiga.'] },
+                    { title: 'Ver a carteira de um vendedor', objective: 'Visualizar no mapa onde o representante atua.', steps: ['Selecione o vendedor no filtro e clique em Filtrar.', 'Observe as cidades atendidas e o tamanho das bolhas.', 'Compare com Ano anterior para avaliar crescimento da carteira.'] },
+                    { title: 'Campanha regional', objective: 'Montar base de contatos para ação local.', steps: ['Filtre pela UF (ou Cidade) desejada.', 'Consulte a lista de clientes nas bolhas principais.', 'Destaque as cidades-chave para dimensionar o potencial.'] }
+                ],
+                faq: [
+                    { q: 'Uma cidade não aparece no mapa.', a: 'Verifique o aviso de "cidades sem localização" abaixo do mapa. Geralmente o nome está diferente da base oficial do IBGE ou o cliente está sem endereço principal.' },
+                    { q: 'Por que não mostra o bairro ou a rua, como no Power BI?', a: 'O sistema não armazena latitude e longitude dos endereços. O mapa vai até o nível de cidade, e o bairro aparece na lista de clientes ao passar o mouse.' },
+                    { q: 'O cliente aparece na cidade errada.', a: 'A tela usa o endereço principal do cadastro do cliente, e não o endereço de entrega do pedido.' },
+                    { q: 'O total é diferente da Análise de Vendas.', a: 'Verifique se período, filial e vendedor são iguais e se não há filtro de Cliente/Cidade aqui ou Canal de venda lá.' },
+                    { q: 'A lista de clientes demora para abrir.', a: 'Na primeira consulta a lista é buscada no servidor; depois fica em cache e abre instantaneamente até novo clique em Filtrar.' },
+                    { q: 'O vendedor só vê alguns clientes.', a: 'Usuários com perfil de vendedor visualizam somente as próprias vendas.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no cadastro do usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Total vendido e o número de Cidades do mês atual.',
+                    'Abra os filtros, escolha "Todos os meses" e clique em Filtrar. Veja as bolhas aumentarem.',
+                    'Dê zoom no seu estado com a roda do mouse e arraste o mapa.',
+                    'Passe o mouse na maior bolha e veja a lista de clientes.',
+                    'Clique na mesma bolha e confira a etiqueta "Filtrado por" e os números da cidade.',
+                    'Clique de novo na bolha para tirar o destaque.',
+                    'Escolha um vendedor no filtro e veja como o mapa muda.',
+                    'Se aparecer o aviso de cidades sem localização, abra a lista e veja quais cidades estão com o nome diferente.'
+                ]
+            },
+            {
+                num: '03',
+                id: 'bi-clientes-vendedores',
+                title: 'B.I – Análise Clientes e Vendedores',
+                module: 'Comercial & Vendas',
+                pdfPath: 'pdfs/03 - BI Clientes e Vendedores - Passo a passo.pdf',
+                pdfName: '03 - BI Clientes e Vendedores - Passo a passo.pdf',
+                keywords: ['vendedor', 'cliente', 'ranking', 'semana', 'pagamento', 'crediario', 'comissao', 'performance'],
+                summary: 'Mostra quem vende e quem compra: rankings de vendedores e clientes, dias da semana mais fortes, formas de pagamento e tabela Performance Comercial.',
+                access: 'Dashboard > Power BI > B.I > Análise Clientes e Vendedores',
+                permission: 'OUT11',
+                audience: 'Gerente comercial (acompanhar e premiar a equipe), dono da empresa e financeiro (formas de pagamento).',
+                questionsAnswered: [
+                    'Quais vendedores mais venderam no período?',
+                    'Quem são os melhores clientes e quanto cada um comprou?',
+                    'Quais clientes cada vendedor atendeu?',
+                    'Em que dia da semana se vende mais?',
+                    'Quanto entrou em cada forma de pagamento (dinheiro, cartão, PIX, crediário)?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda ("▶ Filtros").',
+                    'Cabeçalho com botão "Rankings: Top 5 | Top 10 | Top 20 | Todos", período e Menu.',
+                    'Barra "Comparar com" e 5 cards de indicadores.',
+                    '4 Gráficos: Ranking de Vendedores, Ranking de Clientes, Dias da semana e Formas de Pagamento.',
+                    'Tabela hierárquica Performance Comercial: Filial › Vendedor › Cliente.'
+                ],
+                headerControls: [
+                    'Rankings (Top 5 | Top 10 | Top 20 | Todos): Controla quantos nomes aparecem nos rankings de Vendedores e Clientes (abre em Top 10). Não altera os cards nem os demais gráficos.'
+                ],
+                filters: [
+                    { name: 'Ano', desc: 'Ano das vendas (abre no ano atual).', note: '"Todos os anos" bloqueia o campo Mês.' },
+                    { name: 'Mês', desc: 'Mês das vendas (abre no mês atual).', note: '"Todos os meses" mostra o ano inteiro.' },
+                    { name: 'Datas', desc: 'Intervalo livre (inicial e final).', note: 'Substituem Ano e Mês quando preenchidas.' },
+                    { name: 'Filial', desc: 'Empresa das vendas.', note: 'Matriz abre em "Todas as filiais".' },
+                    { name: 'Vendedor', desc: 'Vendas de um vendedor.', note: 'Se logado como vendedor, fica travado nele.' },
+                    { name: 'UF do cliente', desc: 'Estado do cliente.', note: 'Baseado no endereço principal do cadastro.' }
+                ],
+                dataRules: [
+                    'Mesma regra de pedidos da Análise de Vendas (data de cadastro, valor líquido > 0, sem Devolvidos e Cancelados).',
+                    'Vendedor: informado no pedido. Pedidos sem vendedor aparecem como "SEM VENDEDOR".',
+                    'Dia da semana: calculado pela data de cadastro do pedido.'
+                ],
+                dataRuleNote: 'Com o mesmo período, filial, vendedor e UF, o Total vendas desta tela é igual ao da Análise de Vendas.',
+                cards: [
+                    { name: 'QTD. PEDIDOS', desc: 'Quantos pedidos foram feitos.', calc: 'Contagem dos pedidos.' },
+                    { name: 'TOTAL CLIENTES', desc: 'Clientes diferentes que compraram.', calc: 'Um cliente conta uma única vez.' },
+                    { name: 'MÉDIA DIÁRIA', desc: 'Venda média por dia.', calc: 'Total vendas ÷ dias corridos (até hoje no mês atual).' },
+                    { name: 'TICKET MÉDIO', desc: 'Valor médio de cada pedido.', calc: 'Total vendas ÷ Qtd. pedidos.' },
+                    { name: 'TOTAL VENDAS', desc: 'Quanto foi vendido.', calc: 'Soma do valor líquido dos pedidos.' }
+                ],
+                comparisonNote: 'Cliques em vendedores ou clientes nos gráficos também valem na comparação ▲/▼. Se não houve venda no período anterior, exibe "sem venda no período comparado".',
+                charts: [
+                    {
+                        title: 'Ranking de Vendedores',
+                        shows: 'Total vendido por vendedor do maior para o menor.',
+                        purpose: 'Acompanhar metas, premiações e filtrar a carteira de clientes de um vendedor com um clique.',
+                        howToRead: 'Pedidos sem vendedor aparecem como "SEM VENDEDOR".'
+                    },
+                    {
+                        title: 'Ranking de Clientes',
+                        shows: 'Maiores compradores do período (obedece ao botão Top 5/10/20/Todos).',
+                        purpose: 'Ações de fidelização e descobrir quais vendedores atenderam determinado cliente.',
+                        howToRead: 'Ao clicar em um vendedor, exibe automaticamente só os clientes dele.'
+                    },
+                    {
+                        title: 'Dias da semana que mais vendem',
+                        shows: 'Linha com faturamento de domingo a sábado no período.',
+                        purpose: 'Planejar escala de equipe, promoções e horários de atendimento.',
+                        howToRead: 'Em períodos curtos (1 mês), alguns dias ocorrem 4 vezes e outros 5 vezes.'
+                    },
+                    {
+                        title: 'Faturamento por Forma de Pagamento',
+                        shows: 'Barras com faturamento e pedidos por meio de pagamento.',
+                        purpose: 'Previsão de recebimentos e análise de taxas financeiras.',
+                        howToRead: 'Aberto = forma do pedido. Em Crediário/Em Análise = exibe o status. Acertado (Concluído/Parcial) = forma da prestação de contas ("Personalizado" sem condição; "Sem-Definicao" sem receita gerada).'
+                    },
+                    {
+                        title: 'Performance Comercial: Filial › Vendedor › Cliente',
+                        shows: 'Tabela expansível com Qtd. Pedidos, Clientes, Peças, Média Diária, Ticket Médio e Total Vendas.',
+                        purpose: 'Conferência detalhada da carteira de cada vendedor por filial.',
+                        howToRead: 'Use "Abrir filiais" ou "Fechar tudo". A linha Total no rodapé bate com os cards.'
+                    }
+                ],
+                crossFilter: 'Combine cliques entre Vendedor, Cliente, Dia da semana e Forma de pagamento (ex: Vendedor X + Sábado + Cartão). A tabela Performance Comercial também é filtrada.',
+                dailyUse: [
+                    { title: 'Fechamento do mês da equipe', objective: 'Avaliar resultados individuais e evolução mensal.', steps: ['Filtre o mês encerrado e marque Rankings = Todos.', 'Clique em cada vendedor e confira ▲▼ contra Período anterior.', 'Use a tabela Performance Comercial para conferir ticket médio e clientes.'] },
+                    { title: 'Carteira de clientes de um vendedor', objective: 'Levantar todos os compradores de um vendedor.', steps: ['Clique no vendedor no Ranking de Vendedores.', 'Veja o Ranking de Clientes filtrado e abra a tabela Performance Comercial.'] },
+                    { title: 'Planejar escala e promoções', objective: 'Atuar nos dias mais fracos da semana.', steps: ['Filtre vários meses ou o ano inteiro.', 'Clique no dia mais fraco no gráfico de Dias da Semana para analisar vendedores e formas de pagamento.'] }
+                ],
+                faq: [
+                    { q: 'Aparece SEM VENDEDOR no ranking.', a: 'São pedidos lançados sem vendedor informado. Oriente a equipe a preencher o campo nos próximos pedidos.' },
+                    { q: 'O valor do vendedor está diferente do relatório de comissão.', a: 'Esta tela usa valor líquido pela data de cadastro do pedido. Relatórios de comissão podem usar data de recebimento, faturamento ou regras específicas.' },
+                    { q: 'A forma de pagamento de um pedido mudou.', a: 'Para pedidos acertados, a forma vem da prestação de contas. Um pedido lançado em Dinheiro pode mudar para Cartão após o acerto.' },
+                    { q: 'O que é Personalizado e Sem-Definicao?', a: 'Personalizado = pedido acertado sem condição de pagamento. Sem-Definicao = pedido acertado sem receita gerada.' },
+                    { q: 'O vendedor só vê os próprios números.', a: 'Comportamento esperado: usuários vendedores ficam travados nas próprias vendas.' },
+                    { q: 'O ranking mostra poucos clientes.', a: 'Verifique o botão Rankings (Top 5/10/20/Todos) e se existe algum vendedor clicado.' },
+                    { q: 'Os números não batem com a Análise de Vendas.', a: 'Confira se período, filtros e etiquetas "Filtrado por" são iguais (lembre que a Análise de Vendas possui filtro de Canal).' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Total vendas e a Qtd. pedidos do mês atual.',
+                    'Troque o botão Rankings para Top 5 e depois para Todos. Veja os rankings mudarem e os cards ficarem iguais.',
+                    'Clique no primeiro vendedor do ranking. Confira a etiqueta "Filtrado por" e o Ranking de Clientes filtrado.',
+                    'Clique também numa forma de pagamento e veja as duas etiquetas juntas.',
+                    'Clique em "limpar seleção".',
+                    'Na tabela Performance Comercial, abra uma filial e um vendedor e confira os clientes.',
+                    'Confira que a linha Total da tabela é igual ao card Total vendas.'
+                ]
+            },
+            {
+                num: '04',
+                id: 'bi-analise-produtos',
+                title: 'B.I – Análise de Produtos',
+                module: 'Comercial & Vendas',
+                pdfPath: 'pdfs/04 - BI Produtos - Passo a passo.pdf',
+                pdfName: '04 - BI Produtos - Passo a passo.pdf',
+                keywords: ['produto', 'curva abc', 'com173', 'giro', 'com162', 'grade', 'tamanho', 'markup', 'estoque', 'subgrupo'],
+                summary: 'Analisa produtos campeões, grupos, subgrupos, grades (tamanhos), Curva ABC (COM173) e Giro de Estoque (COM162) com visão em Peças ou Valor.',
+                access: 'Dashboard > Power BI > B.I > Análise de Produtos',
+                permission: 'OUT11',
+                audience: 'Compras, produção, comercial e dono da empresa, para decidir o que repor, produzir, promover ou tirar de linha.',
+                questionsAnswered: [
+                    'Quais produtos mais vendem, em peças e em valor?',
+                    'Quais grupos e subgrupos de produto trazem mais resultado?',
+                    'Quais tamanhos (grades) saem mais?',
+                    'Quais produtos são A, B ou C na Curva ABC?',
+                    'Quais produtos giram bem e quais estão parados no estoque?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda ("▶ Filtros").',
+                    'Cabeçalho com botões Top 5|10|20|Todos e Peças | Valor, período e Menu.',
+                    'Barra "Comparar com" e 5 cards.',
+                    'Gráficos de vendas: Ranking de Produtos, Tabela Grupo › Subgrupo › Produto, Ranking por Grades e Ranking por Grupo.',
+                    'Curva ABC de Produtos e Giro de Estoque na parte inferior.'
+                ],
+                headerControls: [
+                    'Top 5 | Top 10 | Top 20 | Todos: Define quantos itens aparecem nos rankings e no Giro de Estoque (a Curva ABC sempre mostra todos).',
+                    'Peças | Valor: Alterna ordenação e métrica dos rankings e da tabela de grupos entre quantidade de peças e faturamento.'
+                ],
+                filters: [
+                    { name: 'Ano / Mês', desc: 'Período das vendas (abre no mês atual).', note: '"Todos os anos" bloqueia Mês.' },
+                    { name: 'Datas', desc: 'Intervalo livre.', note: 'Substituem Ano e Mês.' },
+                    { name: 'Filial', desc: 'Empresa das vendas.', note: 'Também define de qual empresa vêm a entrada e o estoque do Giro.' },
+                    { name: 'Vendedor', desc: 'Vendas de um vendedor.', note: 'No Giro, filtra apenas as vendas (entrada e estoque não têm vendedor).' },
+                    { name: 'UF do cliente', desc: 'Estado do cliente.', note: 'No Giro, filtra apenas as vendas.' }
+                ],
+                dataRules: [
+                    'Pedidos seguem a mesma regra comercial do B.I (data de cadastro, valor líquido > 0, sem Devolvidos e Cancelados).',
+                    'Valor líquido por item = quantidade × preço unitário − descontos (item e pedido) + acréscimo rateado pelas peças.',
+                    'Grade: tamanho vendido. Itens sem tamanho aparecem como "SEM GRADE".'
+                ],
+                dataRuleNote: 'Os cards somam o valor dos pedidos; os produtos usam o valor líquido rateado por item. Pequenas diferenças de arredondamento são normais.',
+                cards: [
+                    { name: 'TOTAL VENDAS', desc: 'Quanto foi vendido.', calc: 'Soma do valor líquido dos pedidos.' },
+                    { name: 'QTD. ITENS', desc: 'Peças vendidas.', calc: 'Soma das peças dos pedidos.' },
+                    { name: 'TICKET MÉDIO', desc: 'Valor médio por pedido.', calc: 'Total vendas ÷ quantidade de pedidos.' },
+                    { name: 'MÉDIA DIÁRIA', desc: 'Venda média por dia.', calc: 'Total vendas ÷ dias corridos (até hoje se em andamento).' },
+                    { name: 'TOTAL CLIENTES', desc: 'Clientes diferentes.', calc: 'Cada cliente conta 1 vez.' }
+                ],
+                comparisonNote: 'Seleções feitas clicando em produtos, grupos ou tamanhos nos gráficos também são aplicadas na comparação ▲/▼.',
+                charts: [
+                    {
+                        title: 'Ranking de Produtos Vendidos',
+                        shows: 'Produtos campeões por peças ou valor (conforme botão do cabeçalho).',
+                        purpose: 'Priorizar reposição e produção dos itens de maior saída.',
+                        howToRead: 'Obedece ao botão Top (5, 10, 20 ou Todos).'
+                    },
+                    {
+                        title: 'Grupo › Subgrupo › Produto',
+                        shows: 'Tabela expansível com peças, valor e participação (%).',
+                        purpose: 'Avaliar o peso de cada linha e abrir até o nível do produto.',
+                        howToRead: 'Clicar no grupo abre subgrupos e filtra os cards.'
+                    },
+                    {
+                        title: 'Ranking por Grades Vendidas & Ranking por Grupo',
+                        shows: 'Barras por tamanho (grade) e gráfico de rosca por grupo.',
+                        purpose: 'Acertar a proporção de tamanhos nas compras e ver grupos dominantes.',
+                        howToRead: 'Itens sem tamanho aparecem como "SEM GRADE".'
+                    },
+                    {
+                        title: 'Curva ABC de Produtos (COM173)',
+                        shows: 'Classificação A (até 80% do faturamento), B (80% a 95%) e C (restante) com linhas de % acumulado.',
+                        purpose: 'Focar estoque e negociação nos itens classe A e planejar promoções nos itens C.',
+                        howToRead: 'Visões: Produto | Grupo | Subgrupo | Marca. Clique nos cards A, B ou C para filtrar. Use Shift + rolar para zoom. Sempre exibe todos os itens.'
+                    },
+                    {
+                        title: 'Giro de Estoque (COM162)',
+                        shows: 'GIRO % = peças vendidas ÷ peças que entraram no estoque no período × 100.',
+                        purpose: 'Achar produtos parados (giro baixo) e itens que acabam rápido (giro alto).',
+                        howToRead: 'Escolha a tabela de preço ao lado do título para ver preço, custo, markup (preço ÷ custo) e margem. Produtos sem entrada no período não aparecem.'
+                    }
+                ],
+                crossFilter: 'Clique em qualquer produto, grupo ou tamanho para filtrar toda a tela. Combine cliques (ex: Grupo Camisetas + Tamanho M) e limpe pelo "×" ou "limpar seleção".',
+                dailyUse: [
+                    { title: 'Decidir a reposição', objective: 'Definir o que comprar ou produzir.', steps: ['Filtre os últimos meses e veja o Ranking de Produtos em Peças.', 'Confira itens com giro alto no Giro de Estoque.', 'Use o Ranking por Grades para definir a grade de tamanhos.'] },
+                    { title: 'Encontrar produtos parados', objective: 'Identificar capital parado para liquidação.', steps: ['Selecione Top = Todos e role até o fim do Giro de Estoque (menor giro).', 'Passe o mouse para ver o valor parado em estoque.', 'Cruze com a letra C da Curva ABC.'] },
+                    { title: 'Avaliar um grupo de produtos', objective: 'Entender a performance de uma linha específica.', steps: ['Clique no grupo no gráfico de rosca.', 'Leia os cards recalculados e a variação ▲▼.', 'Use a Curva ABC na visão Subgrupo.'] }
+                ],
+                faq: [
+                    { q: 'A soma dos produtos não bate com o Total vendas.', a: 'Os cards somam o valor dos pedidos; os produtos rateiam descontos e acréscimos por item, podendo gerar pequenas diferenças de arredondamento.' },
+                    { q: 'Um produto não aparece no Giro de Estoque.', a: 'O Giro só exibe produtos que tiveram entrada no estoque no período (base do cálculo do COM162).' },
+                    { q: 'A Curva ABC está diferente do relatório COM173.', a: 'A regra das letras (80% / 95%) é a mesma, mas os pedidos seguem a regra do B.I (sem devolvidos/cancelados) para bater com os cards.' },
+                    { q: 'Giro acima de 100%.', a: 'Normal quando a empresa vendeu mais peças do que entraram no período, consumindo saldo que já havia em estoque.' },
+                    { q: 'Aparece SEM GRADE.', a: 'São itens vendidos sem tamanho informado.' },
+                    { q: 'O markup está estranho.', a: 'Markup = preço ÷ custo da tabela de preço selecionada no Giro. Confira a tabela escolhida e o custo cadastrado do produto.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Total vendas e a Qtd. itens.',
+                    'Troque Peças por Valor e veja o Ranking de Produtos mudar de ordem.',
+                    'Clique num grupo no Ranking por Grupo e confira os cards filtrados.',
+                    'Clique também num tamanho e veja as duas etiquetas.',
+                    'Clique em "limpar seleção".',
+                    'Na Curva ABC, clique no card da letra A e depois troque a visão para Grupo.',
+                    'No Giro de Estoque, passe o mouse no primeiro produto e leia entrada, vendidas e estoque.'
+                ]
+            },
+            {
+                num: '05',
+                id: 'bi-fluxo-caixa',
+                title: 'B.I – Fluxo de Caixa - Anual',
+                module: 'Financeiro',
+                pdfPath: 'pdfs/05 - BI Fluxo de Caixa Anual - Passo a passo.pdf',
+                pdfName: '05 - BI Fluxo de Caixa Anual - Passo a passo.pdf',
+                keywords: ['financeiro', 'caixa', 'fin49', 'receita', 'despesa', 'saldo', 'previsao', 'realizado', 'rateio', 'vencimento'],
+                summary: 'Mostra mês a mês quanto entrou (receitas), quanto saiu (despesas) e a evolução do saldo no ano, nos modos Realizado e Previsão — igual ao relatório FIN49.',
+                access: 'Dashboard > Power BI > B.I > Fluxo de Caixa - Anual',
+                permission: 'OUT11',
+                audience: 'Financeiro e dono da empresa, para planejar pagamentos, acompanhar o caixa e preparar reuniões.',
+                questionsAnswered: [
+                    'Quanto entrou e quanto saiu em cada mês do ano?',
+                    'O saldo está subindo ou caindo ao longo do ano?',
+                    'Quanto ainda falta receber e pagar (Previsão)?',
+                    'Dos títulos que venciam no período, quanto já foi pago?',
+                    'Com o que a empresa mais gasta (Ranking de Despesas)?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda ("▶ Filtros").',
+                    'Cabeçalho com botão Realizado | Previsão e botão Menu.',
+                    'Barra "Comparar com" e 5 cards (Saldo inicial, Receitas, Despesas, Resultado e Saldo final).',
+                    'Gráfico Receitas x Despesas por mês com linha do saldo acumulado.',
+                    'Previsto x Realizado e Ranking de Despesas lado a lado.',
+                    'Matriz Receitas/Despesas › Plano pai › Plano de contas (12 meses + Total).'
+                ],
+                headerControls: [
+                    'Realizado | Previsão: Alterna cards, gráfico mensal e matriz entre títulos já baixados (Realizado) e em aberto (Previsão). Não altera Previsto x Realizado nem Ranking de Despesas.'
+                ],
+                filters: [
+                    { name: 'Ano', desc: 'Ano exibido (janeiro a dezembro).', note: 'Tela sempre anual; para ver 1 mês, clique na barra do gráfico.' },
+                    { name: 'Filial', desc: 'Empresa dos títulos.', note: 'Logado na matriz, pode ver todas as filiais.' },
+                    { name: 'Conta', desc: 'Conta financeira.', note: 'Também altera o Saldo inicial, exibindo só o daquela conta.' },
+                    { name: 'Centro de custo', desc: 'Centro de custo das despesas.', note: 'Vale apenas para despesas; receitas não têm centro de custo.' },
+                    { name: 'Aplicar rateio de plano de contas', desc: 'Distribui despesas com rateio pelos planos.', note: 'Mesma opção do relatório FIN49. Desmarcado, fica tudo no plano principal.' }
+                ],
+                dataRules: [
+                    'Realizado: títulos a receber e a pagar já baixados, pela data de baixa, com o valor pago.',
+                    'Previsão: títulos em aberto, pela data de vencimento, com o valor do título.',
+                    'Receitas: formas de pagamento dos tipos 10 e 13 ficam de fora, como no relatório FIN49.',
+                    'Saldo inicial: créditos menos débitos do extrato das contas marcadas para Fluxo de Caixa até 01/01 do ano.'
+                ],
+                dataRuleNote: 'Com o mesmo ano, filial, conta, centro de custo e rateio, a matriz desta tela bate exatamente com o relatório Fluxo de Caixa Mensal do Ano (FIN49).',
+                cards: [
+                    { name: 'SALDO INICIAL', desc: 'Quanto havia nas contas em 01/01.', calc: 'Créditos − débitos do extrato até 01/01 do ano.' },
+                    { name: 'RECEITAS', desc: 'Entradas (ou previstas).', calc: 'Títulos a receber baixados (ou em aberto).' },
+                    { name: 'DESPESAS', desc: 'Saídas (ou previstas).', calc: 'Títulos a pagar baixados (ou em aberto).' },
+                    { name: 'RESULTADO', desc: 'Sobrou ou faltou dinheiro.', calc: 'Receitas − Despesas do ano (ou do mês clicado).' },
+                    { name: 'SALDO FINAL', desc: 'Como termina o caixa.', calc: 'Saldo inicial + Resultado (até o fim do ano ou do mês clicado).' }
+                ],
+                comparisonNote: 'Comparação ▲/▼ funciona apenas no modo Realizado para Receitas, Despesas e Resultado (saldos não comparam). Atenção: despesa subindo aparece em vermelho.',
+                charts: [
+                    {
+                        title: 'Receitas x Despesas por mês',
+                        shows: 'Barras mensais de receitas e despesas + linha do saldo acumulado.',
+                        purpose: 'Identificar meses deficitários e a tendência do caixa.',
+                        howToRead: 'Clique em um mês para filtrar os cards, Previsto x Realizado, Ranking de Despesas e destacar a coluna na matriz.'
+                    },
+                    {
+                        title: 'Previsto x Realizado',
+                        shows: 'Duas barras (Receitas e Despesas) comparando Previsto (atrás) e Realizado (na frente).',
+                        purpose: 'Acompanhar inadimplência e quanto dos títulos com vencimento no período já foi quitado.',
+                        howToRead: 'Usa a data de VENCIMENTO (não muda com o botão Realizado|Previsão). Por isso pode diferir do card Receitas (que usa data de baixa).'
+                    },
+                    {
+                        title: 'Ranking de Despesas',
+                        shows: 'Planos de contas com maior despesa paga (data de baixa), do maior para o menor.',
+                        purpose: 'Identificar onde a empresa mais gasta para cortar custos.',
+                        howToRead: 'Obedece ao filtro de rateio e ao clique no mês, mas não muda com o botão Realizado|Previsão.'
+                    },
+                    {
+                        title: 'Matriz Receitas/Despesas › Plano pai › Plano de contas',
+                        shows: 'Tabela completa de Jan a Dez + Total, igual ao FIN49.',
+                        purpose: 'Conferência contábil/financeira detalhada por plano de contas.',
+                        howToRead: 'Use "Abrir planos pai" e "Fechar tudo". A coluna do mês clicado fica destacada.'
+                    }
+                ],
+                crossFilter: 'Clique em qualquer mês no gráfico "Receitas x Despesas por mês" para focar todos os indicadores e destacar a coluna na matriz. Remova clicando novamente ou no "×" da etiqueta.',
+                dailyUse: [
+                    { title: 'Planejar pagamentos futuros', objective: 'Antecipar falta de caixa.', steps: ['Clique em Previsão no cabeçalho.', 'Identifique meses onde despesas previstas superam receitas.', 'Abra a matriz para ver quais contas pesam naqueles meses.'] },
+                    { title: 'Fechamento do mês', objective: 'Conferir resultado de caixa e inadimplência.', steps: ['Deixe em Realizado e clique no mês encerrado.', 'Leia os cards, o Ranking de Despesas e o Previsto x Realizado.'] },
+                    { title: 'Cortar gastos', objective: 'Localizar despesas crescentes.', steps: ['No modo Realizado, analise o topo do Ranking de Despesas.', 'Abra esses planos na matriz para ver em quais meses o gasto subiu e compare com o ano anterior.'] }
+                ],
+                faq: [
+                    { q: 'Os números não batem com o relatório FIN49.', a: 'Confira se ano, filial, conta, centro de custo e a opção "Aplicar rateio" são exatamente iguais nos dois.' },
+                    { q: 'O Previsto x Realizado não bate com o card Receitas.', a: 'Previsto x Realizado usa data de VENCIMENTO; o card (Realizado) usa data de BAIXA. Títulos pagos em outro mês contam em meses diferentes.' },
+                    { q: 'O saldo inicial está errado.', a: 'Ele vem do extrato das contas marcadas para Fluxo de Caixa até 01/01. Confira se as contas estão marcadas e se o extrato está lançado.' },
+                    { q: 'Receitas de algumas formas de pagamento não aparecem.', a: 'Formas de pagamento dos tipos 10 e 13 ficam de fora por padrão, igual ao relatório FIN49.' },
+                    { q: 'O centro de custo não mudou as receitas.', a: 'Centro de custo aplica-se somente às despesas.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Saldo inicial e o Saldo final do ano.',
+                    'Clique num mês no gráfico e veja os cards, o Previsto x Realizado e o Ranking de Despesas mudarem.',
+                    'Clique no × da etiqueta para voltar ao ano.',
+                    'Troque para Previsão e veja o gráfico e a matriz mudarem.',
+                    'Volte para Realizado, abra a matriz em Despesas e num plano pai.',
+                    'Marque "Aplicar rateio de plano de contas", clique em Filtrar e veja o Ranking de Despesas mudar.'
+                ]
+            },
+            {
+                num: '06',
+                id: 'bi-analise-dre',
+                title: 'B.I – Análise de DRE',
+                module: 'Financeiro',
+                pdfPath: 'pdfs/06 - BI Analise de DRE - Passo a passo.pdf',
+                pdfName: '06 - BI Analise de DRE - Passo a passo.pdf',
+                keywords: ['dre', 'fin48', 'fin68', 'lucro', 'prejuizo', 'cmv', 'margem', 'av%', 'competencia', 'regime'],
+                summary: 'Demonstração do Resultado do Exercício mês a mês (Modelo 1 FIN48 e Modelo 2 FIN68), com visão em Valor ou AV%, regimes de data e cálculo configurável de C.M.V.',
+                access: 'Dashboard > Power BI > B.I > Análise de DRE',
+                permission: 'OUT11',
+                audience: 'Dono da empresa, financeiro e contador, para avaliar a saúde financeira e lucratividade do negócio.',
+                questionsAnswered: [
+                    'A empresa teve lucro ou prejuízo no ano e em cada mês?',
+                    'Quanto da receita vira lucro (margem líquida)?',
+                    'Qual o peso de cada grupo de custo e despesa sobre a receita (AV%)?',
+                    'O resultado está melhor ou pior que no ano passado?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda: Ano, Filial, Entrada operacional, Regime de data e C.M.V.',
+                    'Cabeçalho com botões Modelo 1 | Modelo 2, Valor | AV% e Menu.',
+                    'Barra "Comparar com" e 6 cards principais da DRE.',
+                    'Gráfico Receita líquida de vendas x Lucro líquido por mês.',
+                    'Tabela Demonstração do Resultado completa mês a mês.'
+                ],
+                headerControls: [
+                    'Modelo 1 | Modelo 2: Modelo 1 (FIN48) usa grupos DRE1 e exibe Lucro Bruto. Modelo 2 (FIN68) usa grupos DRE2 e exibe Margem de Contribuição + Resultado final.',
+                    'Valor | AV%: Alterna a tabela entre reais e Análise Vertical (AV% = valor da linha ÷ receita líquida × 100).'
+                ],
+                filters: [
+                    { name: 'Ano', desc: 'Ano da DRE (Jan a Dez).', note: 'Sempre anual; escolha um mês clicando no gráfico.' },
+                    { name: 'Filial', desc: 'Uma filial ou todas.', note: 'Empresa das vendas e dos títulos.' },
+                    { name: 'Entrada operacional', desc: 'Vendas ou Receitas.', note: 'Vendas = pedidos de venda; Receitas = títulos a receber.' },
+                    { name: 'Regime de data', desc: '4 opções (veja tabela abaixo).', note: 'Define quais títulos entram e qual data posiciona cada valor no mês.' },
+                    { name: 'C.M.V', desc: 'Plano de contas, Ficha Técnica ou Custo1.', note: 'Plano de contas (sigla COP), Ficha Técnica aprovada ou Custo1 da tabela de preço × qtd vendida.' }
+                ],
+                extraTableTitle: 'Opções de Regime de Data (iguais ao relatório DRE)',
+                extraTable: [
+                    { col1: 'Regime de Caixa - Por Data de Baixa - Somente Baixados', col2: 'Receitas e despesas já baixadas, pela data de baixa, com o valor pago.' },
+                    { col1: 'Regime de Caixa / Extrato - Por Data de Registro - Somente Baixados', col2: 'Despesas pela data de emissão e receitas pela data de cadastro (sem substituídas/canceladas).' },
+                    { col1: 'Regime de Competência - Por Data de Emissão - Baixados e Abertos', col2: 'Despesas pela data de cadastro do título e receitas pela data de cadastro, baixadas ou em aberto.' },
+                    { col1: 'Por Data de Cadastro do Título - data gerada pelo Sistema', col2: 'Lançamentos do extrato pela data do extrato. Com Entrada = Receitas, inclui transferências e estornos (só Modelo 1).' }
+                ],
+                dataRules: [
+                    'Com Entrada = Vendas: pedidos pela data de cadastro com valor líquido > 0.',
+                    'Ficam de fora apenas pedidos Cancelados (Devolvidos entram na venda e a devolução vai nas Deduções).',
+                    'Exclui operações de Bonificação e Devolução. No Modelo 2, o frete é somado à venda.'
+                ],
+                dataRuleNote: 'A Receita bruta da DRE pode diferir do Total vendas da Análise de Vendas porque a DRE segue as regras dos relatórios financeiros (FIN48/FIN68).',
+                cards: [
+                    { name: 'RECEITA BRUTA DE VENDAS', desc: 'Receita bruta da DRE.', calc: 'Pelas vendas ou pelas receitas, conforme Entrada escolhida.' },
+                    { name: 'DEDUÇÕES', desc: 'Devoluções e abatimentos.', calc: 'Devoluções de vendas + deduções e abatimentos.' },
+                    { name: 'LUCRO BRUTO / MARGEM DE CONTRIBUIÇÃO', desc: 'Resultado após custos diretos.', calc: 'Lucro bruto (Modelo 1) ou Margem de contribuição (Modelo 2).' },
+                    { name: 'DESPESAS OPERACIONAIS', desc: 'Custo de funcionamento.', calc: 'Soma dos grupos de despesas operacionais do modelo.' },
+                    { name: 'LUCRO LÍQUIDO', desc: 'Resultado final do período.', calc: 'Igual à linha de Lucro Líquido do relatório.' },
+                    { name: 'MARGEM LÍQUIDA', desc: '% da receita que vira lucro.', calc: 'Lucro líquido ÷ receita líquida (indicador exclusivo da tela).' }
+                ],
+                comparisonNote: 'Deduções e Despesas subindo aparecem em vermelho. A Margem líquida mostra a variação em pontos percentuais (p.p.), ex: de 10% para 12% = +2 p.p.',
+                charts: [
+                    {
+                        title: 'Receita líquida de vendas x Lucro líquido por mês',
+                        shows: 'Comparativo mensal entre receita líquida e lucro líquido.',
+                        purpose: 'Identificar meses com prejuízo (lucro abaixo de zero) e se o lucro acompanha o faturamento.',
+                        howToRead: 'Clique em um mês para filtrar os cards e destacar a coluna na tabela abaixo.'
+                    },
+                    {
+                        title: 'Demonstração do Resultado',
+                        shows: 'Estrutura completa da DRE de Jan a Dez + Total, com grupos expansíveis.',
+                        purpose: 'Conferir linha a linha com o FIN48/FIN68 e investigar contas que pesam no resultado.',
+                        howToRead: 'Os nomes dos grupos vêm do cadastro Financeiro > Plano de Contas (combos DRE1 e DRE2). Alterne entre Valor e AV%.'
+                    }
+                ],
+                crossFilter: 'Clicar em um mês no gráfico recalcula os 6 cards para aquele mês e destaca a coluna correspondente na Demonstração do Resultado.',
+                dailyUse: [
+                    { title: 'Fechamento mensal do resultado', objective: 'Saber se o mês deu lucro.', steps: ['Configure o ano e as opções usadas pelo contador.', 'Clique no mês desejado no gráfico.', 'Leia Receita bruta, Lucro líquido, Margem líquida e compare com o ano anterior.'] },
+                    { title: 'Encontrar o que pesa no resultado', objective: 'Identificar ofensores de margem.', steps: ['Alterne o cabeçalho para AV%.', 'Veja quais grupos têm maior % sobre a receita líquida e abra suas contas.'] },
+                    { title: 'Conferir com relatório impresso', objective: 'Validar consistência com o FIN48 ou FIN68.', steps: ['Use exatamente o mesmo modelo, ano, filial, entrada, regime de data e C.M.V nos dois locais e compare os totais.'] }
+                ],
+                faq: [
+                    { q: 'Os números não batem com o relatório de DRE.', a: 'Confira se modelo (1 ou 2), ano, filial, entrada operacional, regime de data e C.M.V estão idênticos nos dois.' },
+                    { q: 'A receita da DRE é diferente da Análise de Vendas.', a: 'Esperado: a DRE segue a regra financeira (inclui devolvidos na bruta e abate em deduções; Modelo 2 soma frete; pode usar títulos a receber).' },
+                    { q: 'Um grupo aparece com outro nome.', a: 'Os nomes vêm do cadastro do Plano de Contas (DRE1 e DRE2) de cada empresa.' },
+                    { q: 'Uma despesa não aparece na DRE.', a: 'Verifique se o plano de contas dessa despesa possui o grupo DRE1 ou DRE2 preenchido no cadastro.' },
+                    { q: 'O C.M.V está zerado.', a: 'Ficha Técnica exige ficha aprovada; Custo1 exige custo na tabela de preço; Plano de contas exige títulos no grupo de C.M.V (COP).' },
+                    { q: 'A margem mostra p.p. em vez de %.', a: 'A diferença entre dois percentuais é expressa em pontos percentuais (ex: 10% para 12% = +2 p.p.).' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote a Receita bruta e o Lucro líquido do ano.',
+                    'Troque de Modelo 1 para Modelo 2 e veja o card Lucro bruto virar Margem de contribuição.',
+                    'Clique em AV% e veja a Demonstração do Resultado em percentual.',
+                    'Clique num mês no gráfico e veja os cards do mês.',
+                    'Abra um grupo de despesas na Demonstração do Resultado.',
+                    'Troque o C.M.V para Ficha Técnica, clique em Filtrar e veja o Lucro bruto mudar.'
+                ]
+            },
+            {
+                num: '07',
+                id: 'bi-posicao-producao',
+                title: 'B.I – Posição da Produção',
+                module: 'Produção',
+                pdfPath: 'pdfs/07 - BI Posicao da Producao - Passo a passo.pdf',
+                pdfName: '07 - BI Posicao da Producao - Passo a passo.pdf',
+                keywords: ['producao', 'pro17', 'op', 'departamento', 'faccao', 'atraso', 'conserto', 'componentes', 'mostruario'],
+                summary: 'Foto em tempo real de onde estão as peças das OPs em aberto: saldo por departamento, consertos, peças atrasadas e dias parados — igual ao relatório PRO17.',
+                access: 'Dashboard > Power BI > B.I > Posição da Produção',
+                permission: 'OUT11',
+                audience: 'PCP, gerente de produção e dono da fábrica, para cobrar facções/departamentos e planejar entregas.',
+                questionsAnswered: [
+                    'Quantas peças estão em produção agora e em quais departamentos?',
+                    'Quais OPs estão atrasadas (previsão de retorno vencida)?',
+                    'Quantas peças estão em conserto?',
+                    'Onde as peças estão paradas há mais tempo?',
+                    'Como está a produção por tipo de OP (Normal, Mostruário, Piloto, Reprocesso)?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda.',
+                    'Cabeçalho com botões de Tipo de OP, "Exibir Apenas Componentes" e Menu.',
+                    'Barra "Comparar com" (ativa com filtro de data) e 6 cards.',
+                    '3 Gráficos: Saldo por departamento, Saldo por tipo de serviço e Saldo por tipo de OP.',
+                    'Matriz Posição por departamento com OPs e produtos (atrasadas em vermelho).'
+                ],
+                headerControls: [
+                    'Tipo de OP (Normal | Mostruário | Piloto | Reprocesso): Permite ligar/desligar múltiplos tipos. Abre apenas com Normal.',
+                    'Exibir Apenas Componentes: Mostra somente peças com componente no departamento, junto com as linhas de componentes.'
+                ],
+                filters: [
+                    { name: 'Filial', desc: 'Uma filial ou todas.', note: 'Empresa das OPs.' },
+                    { name: 'Linha de produção', desc: 'Uma linha ou todas.', note: 'Linha de produção cadastrada no produto.' },
+                    { name: 'Fases', desc: 'Todas; sem fase inicial; sem fase final; sem as duas.', note: 'Oculta departamentos de fase inicial/final, como no PRO17.' },
+                    { name: 'Consertos', desc: 'Com e sem; só em conserto; só normais.', note: 'Separa OPs que estão em conserto.' },
+                    { name: 'Filtrar por data', desc: 'Posição atual (sem data), Prev. de Retorno, Dt. Pré-Fase, Dt. Prev. Início, Dt. Prev. Fim.', note: 'Libera o campo Datas e habilita a comparação ▲/▼.' },
+                    { name: 'Datas', desc: 'Data inicial e final.', note: 'Disponível somente quando um tipo de data é escolhido.' }
+                ],
+                dataRules: [
+                    'Esta tela mostra a situação de AGORA (uma foto do momento), usando a mesma consulta do relatório PRO17.',
+                    'Não é um histórico de produção concluída (para histórico mensal, use a tela Ordem de Produção).'
+                ],
+                dataRuleNote: 'A comparação ▲/▼ só aparece quando "Filtrar por data" está ativo, comparando OPs abertas HOJE com data no período atual vs período anterior.',
+                cards: [
+                    { name: 'OPs EM PRODUÇÃO', desc: 'OPs abertas em andamento.', calc: 'OPs em aberto com saldo ou conserto em algum departamento.' },
+                    { name: 'PEÇAS DAS OPs (CORTE)', desc: 'Total cortado das OPs.', calc: 'Peças cortadas de cada OP em produção (contadas 1 vez por OP).' },
+                    { name: 'SALDO EM PRODUÇÃO', desc: 'Peças paradas nos departamentos.', calc: 'Mesmo saldo do relatório PRO17.' },
+                    { name: 'EM CONSERTO', desc: 'Peças em retrabalho.', calc: 'Peças das OPs que estão em conserto.' },
+                    { name: 'PEÇAS ATRASADAS', desc: 'Retorno vencido.', calc: 'Saldo + conserto das linhas com previsão de retorno vencida.' },
+                    { name: 'MÉDIA DE DIAS PARADO', desc: 'Tempo médio no departamento.', calc: 'Dias desde o último envio, média ponderada pelo saldo.' }
+                ],
+                comparisonNote: 'Na comparação (com filtro de data), OPs, Peças e Saldo aparecem em cinza (neutro). Conserto, Atrasadas e Dias parado subindo aparecem em vermelho.',
+                charts: [
+                    {
+                        title: 'Saldo por departamento',
+                        shows: 'Peças paradas em cada departamento, na ordem do relatório.',
+                        purpose: 'Localizar gargalos e saber qual facção ou setor cobrar.',
+                        howToRead: 'Clique no departamento para filtrar cards, matriz e demais gráficos.'
+                    },
+                    {
+                        title: 'Saldo por tipo de serviço',
+                        shows: 'Peças agrupadas por tipo de serviço da OS (costura, lavanderia, bordado etc.).',
+                        purpose: 'Identificar etapas produtivas sobrecarregadas.',
+                        howToRead: 'Clique em um serviço para filtrar a tela.'
+                    },
+                    {
+                        title: 'Saldo por tipo de OP',
+                        shows: 'Distribuição entre Normal, Piloto, Mostruário e Reprocesso.',
+                        purpose: 'Medir o peso de amostras e reprocessos na fábrica.',
+                        howToRead: 'Exibe apenas os tipos marcados no cabeçalho.'
+                    },
+                    {
+                        title: 'Posição por departamento (Matriz)',
+                        shows: 'Tabela detalhada igual ao PRO17 com Saldo, Conserto, Qtde corte, Último envio, Dias, Prev. retorno e Linha prod.',
+                        purpose: 'Listar exatamente quais OPs estão atrasadas (linhas em vermelho) em cada facção.',
+                        howToRead: 'Agrupamentos: Departamento › OP › Produto ou Tipo de OP › Departamento › OP.'
+                    }
+                ],
+                crossFilter: 'Clique em departamentos, serviços ou tipos de OP para filtrar e combinar (ex: Facção X + Mostruário). Limpe clicando de novo ou em "limpar seleção".',
+                dailyUse: [
+                    { title: 'Reunião diária de produção', objective: 'Identificar gargalos e atrasos do dia.', steps: ['Abra na posição atual e olhe Saldo por departamento.', 'Confira Peças atrasadas e Média de dias parado.', 'Abra o maior departamento na matriz e analise as linhas vermelhas.'] },
+                    { title: 'Cobrar uma facção', objective: 'Levantar pendências de um terceirizado.', steps: ['Clique no departamento/facção no gráfico.', 'Na matriz, priorize a cobrança pelas linhas em vermelho e maiores dias parados.'] },
+                    { title: 'Ver o que deve voltar na semana', objective: 'Acompanhar previsões de entrega.', steps: ['Em "Filtrar por data", escolha Prev. de Retorno, informe a semana e clique em Filtrar.'] }
+                ],
+                faq: [
+                    { q: 'Os números não batem com o relatório PRO17.', a: 'Confira se tipo de OP, fases, consertos, filtro de data e opção de componentes estão iguais nos dois.' },
+                    { q: 'Não aparecem as OPs de mostruário/piloto.', a: 'A tela abre marcada apenas com Normal. Ative os outros tipos nos botões do cabeçalho.' },
+                    { q: 'Uma OP aparece atrasada mas já voltou.', a: 'O atraso usa a previsão de retorno da OS. Confira se o retorno já foi lançado no sistema.' },
+                    { q: 'A comparação ▲▼ não aparece.', a: 'Ela só fica disponível quando um campo em "Filtrar por data" está selecionado.' },
+                    { q: 'Quero ver quanto produzi no mês.', a: 'Esta tela é a foto do momento. Para histórico produzido por mês, use a tela Ordem de Produção.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote o Saldo em produção e as Peças atrasadas.',
+                    'Marque também Mostruário no cabeçalho e veja os números mudarem.',
+                    'Clique no departamento com mais saldo e veja a matriz filtrada.',
+                    'Abra o departamento na matriz e procure linhas em vermelho.',
+                    'Troque o agrupamento da matriz para Tipo de OP › Departamento › OP.',
+                    'Em "Filtrar por data", escolha Prev. de Retorno, preencha um período e clique em Filtrar. Veja a comparação ▲▼ aparecer.',
+                    'Clique em Limpar.'
+                ]
+            },
+            {
+                num: '08',
+                id: 'bi-ordem-producao',
+                title: 'B.I – Ordem de Produção',
+                module: 'Produção',
+                pdfPath: 'pdfs/08 - BI Ordem de Producao - Passo a passo.pdf',
+                pdfName: '08 - BI Ordem de Producao - Passo a passo.pdf',
+                keywords: ['ordem', 'produzidas', 'ld', 'perda', 'qualidade', 'historico', 'estoque', 'filial'],
+                summary: 'Mostra o histórico da produção: peças produzidas que entraram no estoque via OP, lançamentos de LD, Perdas e % Perda ao longo do tempo.',
+                access: 'Dashboard > Power BI > B.I > Ordem de Produção',
+                permission: 'OUT11',
+                audience: 'Gerente de produção, PCP e dono da fábrica.',
+                questionsAnswered: [
+                    'Quantas peças produzimos neste mês, neste ano ou em cada mês?',
+                    'A produção está crescendo ou caindo?',
+                    'Quantas peças viraram LD ou perda, e qual o percentual de perda?',
+                    'Como cada filial contribuiu para a produção?'
+                ],
+                overview: [
+                    'Coluna de filtros à esquerda.',
+                    'Cabeçalho com botões de Tipo de OP (Normal, Mostruário, Piloto, Reprocesso) e Menu.',
+                    'Barra "Comparar com" e 4 cards: Peças produzidas, Qtd. LD, Qtd. Perda e % Perda.',
+                    '2 Gráficos: Evolução da Produção (empilhado por filial) e LD x Perda.'
+                ],
+                headerControls: [
+                    'Tipo de OP (Normal | Mostruário | Piloto | Reprocesso): Permite ligar/desligar múltiplos tipos. Abre apenas com Normal.'
+                ],
+                filters: [
+                    { name: 'Ano', desc: 'Ano da produção (abre no ano atual).', note: '"Todos os anos" mostra desde o primeiro movimento e bloqueia Mês.' },
+                    { name: 'Mês', desc: 'Mês da produção.', note: 'Abre em "Todos os meses" (ano inteiro), diferente das telas de vendas.' },
+                    { name: 'Datas', desc: 'Intervalo livre.', note: 'Substituem Ano e Mês quando preenchidas.' },
+                    { name: 'Filial', desc: 'Empresa onde as peças entraram no estoque.', note: 'Vale só para Peças produzidas. LD e Perda são gravados na matriz e não mudam com a filial.' }
+                ],
+                dataRules: [
+                    'Peças produzidas: peças que entraram no estoque pelo movimento de entrada de produção da OP, pela data do movimento (OPs canceladas ficam fora).',
+                    'LD e Perda: peças lançadas como LD e como perda nas movimentações de OP pela data do movimento (movimentos cancelados ficam fora).',
+                    'Diferença para a tela inicial: lá LD e Perda são sempre do mês atual; aqui obedecem ao período filtrado.'
+                ],
+                dataRuleNote: 'Diferença para Posição da Produção: Posição mostra onde as peças estão AGORA; Ordem de Produção mostra o histórico do que já foi PRODUZIDO.',
+                cards: [
+                    { name: 'PEÇAS PRODUZIDAS', desc: 'Volume produzido no período.', calc: 'Peças que entraram no estoque vindas de OP na filial/período.' },
+                    { name: 'QTD. LD', desc: 'Peças com defeito (LD).', calc: 'Lançadas como LD nas movimentações de OP (não muda com filial).' },
+                    { name: 'QTD. PERDA', desc: 'Peças perdidas.', calc: 'Lançadas como perda nas movimentações de OP (não muda com filial).' },
+                    { name: '% PERDA', desc: 'Índice de perda sobre produção.', calc: 'Qtd. Perda ÷ Peças produzidas.' }
+                ],
+                comparisonNote: 'LD, Perda e % Perda subindo aparecem em vermelho. O % Perda mostra a diferença em pontos percentuais (p.p.).',
+                charts: [
+                    {
+                        title: 'Evolução da Produção',
+                        shows: 'Peças que entraram no estoque por período em barras empilhadas por filial com total no topo.',
+                        purpose: 'Acompanhar crescimento produtivo e contribuição de cada filial.',
+                        howToRead: 'Até 62 dias = dia; até 3 anos = mês; >3 anos ou Todos os anos = ano. Cada cor representa uma filial.'
+                    },
+                    {
+                        title: 'LD x Perda',
+                        shows: 'Evolução de peças lançadas como LD e como perda em cada período.',
+                        purpose: 'Monitorar qualidade fabril e detectar picos anormais de perda.',
+                        howToRead: 'Usa dados da matriz (não muda ao alterar o filtro de Filial).'
+                    }
+                ],
+                crossFilter: 'Clicar em uma barra (período) na Evolução da Produção ou no LD x Perda cria a etiqueta "Filtrado por: Período" e recalcula os 4 cards para aquele período.',
+                dailyUse: [
+                    { title: 'Fechamento mensal da produção', objective: 'Conferir volume e perdas do mês.', steps: ['Abra a tela (já vem no ano inteiro) e clique no mês desejado no gráfico.', 'Leia Peças produzidas, Qtd. Perda e % Perda e compare com o Período anterior.'] },
+                    { title: 'Acompanhar a qualidade', objective: 'Investigar aumento de perdas.', steps: ['Observe no gráfico LD x Perda os meses de pico.', 'Clique nesses meses para avaliar o % Perda nos cards.'] },
+                    { title: 'Comparar filiais', objective: 'Medir participação de cada unidade.', steps: ['Deixe Filial em todas e passe o mouse nas barras empilhadas da Evolução da Produção.'] }
+                ],
+                faq: [
+                    { q: 'Os números são diferentes da tela inicial.', a: 'Na tela inicial, LD e Perda são sempre do mês atual e a evolução usa outra janela. Aqui tudo respeita o período escolhido e o tipo de OP.' },
+                    { q: 'Mudei a filial e o LD e a Perda não mudaram.', a: 'Esperado: LD e Perda são gravados na matriz e não possuem separação por filial.' },
+                    { q: 'Uma OP finalizada não aparece.', a: 'Só contam peças que tiveram o movimento de entrada no estoque da OP realizado e cujo tipo de OP esteja marcado no cabeçalho.' },
+                    { q: 'Não aparecem as OPs de mostruário.', a: 'A tela abre só com Normal. Marque Mostruário nos botões do cabeçalho.' },
+                    { q: 'O % Perda passou de 100%.', a: 'Pode ocorrer em períodos com muita perda lançada (ex: de OPs de meses anteriores) e pouca entrada de produção no estoque.' },
+                    { q: 'Não aparece a tela no menu.', a: 'Falta a permissão OUT11 no usuário.' }
+                ],
+                practice: [
+                    'Abra a tela e anote as Peças produzidas do ano.',
+                    'Passe o mouse num mês da Evolução da Produção e veja as filiais.',
+                    'Clique nesse mês e veja os cards mudarem.',
+                    'Troque "Comparar com" para Período anterior.',
+                    'Marque também Mostruário no cabeçalho e veja os números mudarem.',
+                    'Escolha uma filial e confira que só as Peças produzidas mudam.',
+                    'Clique em Limpar.'
+                ]
+            }
+        ];
+
+        // ================= ESTADO GLOBAL =================
+        const STORAGE_THEME_KEY = 'wiki_bi_theme_v1';
+        const STORAGE_PRACTICE_KEY = 'wiki_bi_practice_v1';
+
+        let activeModule = 'Todos';
+        let globalSearch = '';
+        let currentManualId = null;
+        let currentReaderTab = 'guide';
+        let practiceState = {}; // { [manualId]: [0, 2, ...] }
+        let uploadedPdfs = {};  // { [manualId]: { url, fileName, size } }
+
+        const MODULE_BADGE_STYLES = {
+            'Comercial & Vendas': 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#00E676]/10 dark:text-[#00E676] dark:border-[#00E676]/30',
+            'Financeiro': 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-500/10 dark:text-sky-400 dark:border-sky-500/30',
+            'Produção': 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/30'
+        };
+
+        // ================= INICIALIZAÇÃO =================
+        function initApp() {
+            initTheme();
+            loadPracticeState();
+            renderModuleTabs();
+            renderCatalog();
+            updateGlobalPracticeStat();
+            renderFolderStructureText();
+            setupEvents();
+        }
+
+        function initTheme() {
+            try {
+                const saved = localStorage.getItem(STORAGE_THEME_KEY);
+                const html = document.documentElement;
+                if (saved === 'light') {
+                    html.classList.remove('dark');
+                } else {
+                    html.classList.add('dark'); // Padrão: Dark Mode
+                }
+            } catch (e) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            try {
+                localStorage.setItem(STORAGE_THEME_KEY, isDark ? 'dark' : 'light');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function loadPracticeState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_PRACTICE_KEY);
+                practiceState = raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                practiceState = {};
+            }
+        }
+
+        function savePracticeState() {
+            try {
+                localStorage.setItem(STORAGE_PRACTICE_KEY, JSON.stringify(practiceState));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function setupEvents() {
+            const searchInput = document.getElementById('globalSearchInput');
+            const clearBtn = document.getElementById('clearGlobalSearchBtn');
+
+            searchInput.addEventListener('input', (e) => {
+                globalSearch = e.target.value.trim();
+                clearBtn.classList.toggle('hidden', !globalSearch);
+                clearBtn.classList.toggle('flex', !!globalSearch);
+                renderCatalog();
+            });
+
+            // Drag & Drop no modal de PDFs
+            const dropZone = document.getElementById('pdfDropZone');
+            ['dragenter', 'dragover'].forEach(evt => {
+                dropZone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('border-emerald-500', 'dark:border-[#00E676]', 'bg-emerald-50/50', 'dark:bg-[#00E676]/5');
+                });
+            });
+            ['dragleave', 'drop'].forEach(evt => {
+                dropZone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('border-emerald-500', 'dark:border-[#00E676]', 'bg-emerald-50/50', 'dark:bg-[#00E676]/5');
+                });
+            });
+            dropZone.addEventListener('drop', (e) => {
+                if (e.dataTransfer && e.dataTransfer.files) {
+                    handleBulkPdfFiles(e.dataTransfer.files);
+                }
+            });
+
+            // ESC fecha modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closePdfManagerModal();
+            });
+        }
+
+        // ================= CATÁLOGO & BUSCA INTELIGENTE =================
+        function renderModuleTabs() {
+            const modules = ['Todos', 'Comercial & Vendas', 'Financeiro', 'Produção'];
+            const container = document.getElementById('moduleFilterTabs');
+
+            container.innerHTML = modules.map(mod => {
+                const isActive = mod === activeModule;
+                const count = mod === 'Todos'
+                    ? MANUALS.length
+                    : MANUALS.filter(m => m.module === mod).length;
+
+                return `
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected="${isActive}"
+                        onclick="selectModule('${escapeHtml(mod)}')"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                            isActive
+                                ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-sm'
+                                : 'bg-white dark:bg-[#161E29] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#1F2937] hover:border-emerald-400 dark:hover:border-[#00E676]/50'
+                        }"
+                    >
+                        <span>${escapeHtml(mod)}</span>
+                        <span class="px-1.5 py-0.5 rounded-md text-[11px] font-mono ${
+                            isActive
+                                ? 'bg-black/15 dark:bg-[#0B0F14]/20 text-white dark:text-[#0B0F14]'
+                                : 'bg-slate-100 dark:bg-[#111827] text-slate-500 dark:text-slate-400'
+                        }">${count}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectModule(mod) {
+            activeModule = mod;
+            renderModuleTabs();
+            renderCatalog();
+        }
+
+        function clearGlobalSearch() {
+            const input = document.getElementById('globalSearchInput');
+            input.value = '';
+            globalSearch = '';
+            document.getElementById('clearGlobalSearchBtn').classList.add('hidden');
+            document.getElementById('clearGlobalSearchBtn').classList.remove('flex');
+            renderCatalog();
+        }
+
+        function resetCatalogFilters() {
+            activeModule = 'Todos';
+            clearGlobalSearch();
+            renderModuleTabs();
+            renderCatalog();
+        }
+
+        /**
+         * Avalia se um manual casa com a busca global e se houve correspondência específica no FAQ.
+         */
+        function evaluateSearchMatch(manual, queryNorm) {
+            if (!queryNorm) return { matches: true, faqMatches: 0 };
+
+            const faqMatches = manual.faq.filter(item =>
+                normalizeText(item.q).includes(queryNorm) || normalizeText(item.a).includes(queryNorm)
+            ).length;
+
+            const searchableBlob = normalizeText([
+                manual.num,
+                manual.title,
+                manual.module,
+                manual.summary,
+                manual.permission,
+                manual.audience,
+                ...manual.keywords,
+                ...manual.questionsAnswered,
+                ...manual.overview,
+                ...manual.dataRules,
+                ...manual.filters.map(f => f.name + ' ' + f.desc + ' ' + f.note),
+                ...manual.cards.map(c => c.name + ' ' + c.desc + ' ' + c.calc),
+                ...manual.charts.map(ch => ch.title + ' ' + ch.shows + ' ' + ch.purpose + ' ' + ch.howToRead),
+                ...manual.practice
+            ].join(' '));
+
+            return {
+                matches: searchableBlob.includes(queryNorm) || faqMatches > 0,
+                faqMatches
+            };
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('manualsGrid');
+            const emptyState = document.getElementById('catalogEmptyState');
+            const counter = document.getElementById('catalogCounter');
+            const queryNorm = normalizeText(globalSearch);
+
+            const results = MANUALS
+                .filter(m => activeModule === 'Todos' || m.module === activeModule)
+                .map(m => ({ manual: m, ...evaluateSearchMatch(m, queryNorm) }))
+                .filter(item => item.matches);
+
+            counter.textContent = results.length === 1
+                ? 'Exibindo 1 manual'
+                : `Exibindo ${results.length} manuais`;
+
+            if (results.length === 0) {
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            grid.innerHTML = results.map(({ manual, faqMatches }) => {
+                const modStyle = MODULE_BADGE_STYLES[manual.module] || '';
+                const doneCount = (practiceState[manual.id] || []).length;
+                const totalPractice = manual.practice.length;
+                const pct = totalPractice > 0 ? Math.round((doneCount / totalPractice) * 100) : 0;
+                const hasLocalPdf = !!uploadedPdfs[manual.id];
+
+                return `
+                    <article class="group rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] hover:border-emerald-400 dark:hover:border-[#00E676]/60 p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-200">
+                        <div>
+                            <!-- Topo do Card: Número + Módulo -->
+                            <div class="flex items-center justify-between gap-2 mb-3.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-mono text-xs font-extrabold px-2 py-1 rounded-lg bg-slate-900 text-white dark:bg-[#0B0F14] dark:text-[#00E676] border border-slate-800 dark:border-[#00E676]/30">
+                                        ${manual.num}
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${modStyle}">
+                                        ${escapeHtml(manual.module)}
+                                    </span>
+                                </div>
+                                ${hasLocalPdf ? `
+                                    <span title="PDF oficial anexado localmente" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-[#00E676]/15 dark:text-[#00E676]">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#00E676]"></span>
+                                        PDF Oficial
+                                    </span>
+                                ` : ''}
+                            </div>
+
+                            <!-- Badge de Match no FAQ quando há busca -->
+                            ${faqMatches > 0 ? `
+                                <button
+                                    type="button"
+                                    onclick="openManual('${manual.id}', 'faq', '${escapeHtml(globalSearch)}')"
+                                    class="mb-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 text-amber-800 dark:text-amber-300 text-[11px] font-bold hover:brightness-95 transition-all"
+                                >
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                    </svg>
+                                    ${faqMatches} ${faqMatches === 1 ? 'dúvida encontrada' : 'dúvidas encontradas'} no FAQ →
+                                </button>
+                            ` : ''}
+
+                            <!-- Título e Resumo -->
+                            <h2 onclick="openManual('${manual.id}')" class="text-lg font-extrabold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#00E676] transition-colors cursor-pointer leading-snug mb-2">
+                                ${escapeHtml(manual.title)}
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-3">
+                                ${escapeHtml(manual.summary)}
+                            </p>
+
+                            <!-- Metadados rápidos -->
+                            <div class="flex flex-wrap items-center gap-3 text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-4">
+                                <span class="inline-flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/></svg>
+                                    ${manual.cards.length} cards • ${manual.charts.length} gráficos
+                                </span>
+                                <span class="inline-flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/></svg>
+                                    ${manual.faq.length} FAQs
+                                </span>
+                            </div>
+
+                            <!-- Barra de Progresso do Roteiro Prático -->
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between text-[11px] font-semibold mb-1">
+                                    <span class="text-slate-500 dark:text-slate-400">Roteiro prático (${doneCount}/${totalPractice})</span>
+                                    <span class="${pct === 100 ? 'text-emerald-600 dark:text-[#00E676] font-bold' : 'text-slate-600 dark:text-slate-300'}">${pct}%</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-slate-100 dark:bg-[#0B0F14] rounded-full overflow-hidden">
+                                    <div class="h-full bg-emerald-500 dark:bg-[#00E676] rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ações do Card -->
+                        <div class="pt-3.5 border-t border-slate-100 dark:border-[#1F2937] flex items-center gap-2">
+                            <button
+                                type="button"
+                                onclick="openManual('${manual.id}')"
+                                class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#22C55E] text-white dark:text-[#0B0F14] text-xs sm:text-sm font-bold transition-all active:scale-95"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                                </svg>
+                                Ler Manual
+                            </button>
+                            <button
+                                type="button"
+                                onclick="smartDownloadPdf('${manual.id}')"
+                                class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#111827] dark:hover:bg-[#1F2937] border border-slate-200 dark:border-[#1F2937] text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+                                title="Baixar PDF do manual"
+                            >
+                                <svg class="w-4 h-4 text-emerald-600 dark:text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                                Baixar PDF
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function updateGlobalPracticeStat() {
+            let total = 0;
+            let done = 0;
+            MANUALS.forEach(m => {
+                total += m.practice.length;
+                done += (practiceState[m.id] || []).length;
+            });
+            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+            document.getElementById('globalPracticeStat').textContent = `${pct}%`;
+        }
+
+        // ================= VIEW DE LEITURA DO MANUAL =================
+        function goHome() {
+            currentManualId = null;
+            document.getElementById('readerView').classList.add('hidden');
+            document.getElementById('catalogView').classList.remove('hidden');
+            renderCatalog();
+            updateGlobalPracticeStat();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openManual(manualId, initialTab = 'guide', faqSearchPrefill = '') {
+            const manual = MANUALS.find(m => m.id === manualId);
+            if (!manual) return;
+
+            currentManualId = manualId;
+            document.getElementById('catalogView').classList.add('hidden');
+            document.getElementById('readerView').classList.remove('hidden');
+
+            // Preencher cabeçalho
+            document.getElementById('readerNumBadge').textContent = manual.num;
+            const modBadge = document.getElementById('readerModuleBadge');
+            modBadge.className = `px-2.5 py-1 rounded-full text-xs font-bold border ${MODULE_BADGE_STYLES[manual.module] || ''}`;
+            modBadge.textContent = manual.module;
+
+            document.getElementById('readerTitle').textContent = manual.title;
+            document.getElementById('readerSummary').textContent = manual.summary;
+            document.getElementById('faqCountBadge').textContent = manual.faq.length;
+            document.getElementById('sidebarDownloadPdfBtn').onclick = () => smartDownloadPdf(manual.id);
+            document.getElementById('faqLocalSearch').value = faqSearchPrefill || '';
+
+            updateSidebarPdfStatus(manual);
+            renderGuideTabContent(manual);
+            renderToc(manual);
+            renderFaqList();
+            renderPracticeTab();
+            renderPdfViewerTab(manual);
+
+            switchReaderTab(initialTab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateSidebarPdfStatus(manual) {
+            const el = document.getElementById('sidebarPdfStatus');
+            if (uploadedPdfs[manual.id]) {
+                el.innerHTML = `<span class="text-emerald-600 dark:text-[#00E676] font-semibold">✓ PDF oficial anexado</span>`;
+            } else {
+                el.innerHTML = `<span>Pasta esperada: <code class="font-mono text-[10px]">pdfs/${manual.num}...</code></span>`;
+            }
+        }
+
+        function switchReaderTab(tabName) {
+            currentReaderTab = tabName;
+            const tabs = ['guide', 'faq', 'practice', 'pdf'];
+
+            tabs.forEach(t => {
+                const panel = document.getElementById(`tabPanel-${t}`);
+                const btn = document.getElementById(`tabBtn-${t}`);
+                const isActive = t === tabName;
+
+                panel.classList.toggle('hidden', !isActive);
+                btn.className = `reader-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                    isActive
+                        ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-sm'
+                        : 'bg-slate-100 dark:bg-[#111827] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1F2937]'
+                }`;
+            });
+        }
+
+        function renderToc(manual) {
+            const sections = [
+                { id: 'sec-para-que-serve', label: '1. Para que serve' },
+                { id: 'sec-acesso', label: '2. Como acessar (OUT11)' },
+                { id: 'sec-visao-geral', label: '3. Visão geral da tela' },
+                { id: 'sec-filtros', label: '4. Filtros da tela' },
+                { id: 'sec-regras', label: '5. Origem e regras dos dados' },
+                { id: 'sec-cards', label: '6. Cards e comparação ▲▼' },
+                { id: 'sec-graficos', label: '7. Gráficos e tabelas' },
+                { id: 'sec-filtro-cruzado', label: '8. Filtro cruzado' },
+                { id: 'sec-dia-a-dia', label: '9. Usando no dia a dia' }
+            ];
+
+            const nav = document.getElementById('readerTocNav');
+            nav.innerHTML = sections.map(s => `
+                <button
+                    type="button"
+                    onclick="scrollToSection('${s.id}')"
+                    class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#111827] hover:text-emerald-600 dark:hover:text-[#00E676] transition-colors"
+                >
+                    ${s.label}
+                </button>
+            `).join('');
+        }
+
+        function scrollToSection(sectionId) {
+            if (currentReaderTab !== 'guide') {
+                switchReaderTab('guide');
+            }
+            const target = document.getElementById(sectionId);
+            if (target) {
+                const yOffset = -96;
+                const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        /**
+         * Renderiza a Aba 1 (Passo a Passo Completo) com tabelas limpas e cards técnicos.
+         */
+        function renderGuideTabContent(m) {
+            const container = document.getElementById('tabPanel-guide');
+
+            const headerControlsHtml = m.headerControls ? `
+                <div class="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-[#00E676] mb-2">Botões do Cabeçalho</h4>
+                    <ul class="space-y-1.5 text-sm text-slate-700 dark:text-slate-300">
+                        ${m.headerControls.map(c => `<li class="flex items-start gap-2"><span class="text-emerald-500 dark:text-[#00E676] font-bold">•</span><span>${escapeHtml(c)}</span></li>`).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
+            const extraTableHtml = m.extraTable ? `
+                <div class="mt-5">
+                    <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2.5">${escapeHtml(m.extraTableTitle)}</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1F2937]">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 dark:bg-[#111827] text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-[#1F2937]">
+                                <tr>
+                                    <th class="px-4 py-2.5 font-bold">Opção</th>
+                                    <th class="px-4 py-2.5 font-bold">O que entra</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-[#1F2937]">
+                                ${m.extraTable.map(row => `
+                                    <tr class="hover:bg-slate-50/70 dark:hover:bg-[#111827]/60">
+                                        <td class="px-4 py-2.5 font-semibold text-slate-900 dark:text-white">${escapeHtml(row.col1)}</td>
+                                        <td class="px-4 py-2.5 text-slate-600 dark:text-slate-300">${escapeHtml(row.col2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <!-- 1. Para que serve -->
+                <section id="sec-para-que-serve" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">01</span>
+                        Para que serve a tela
+                    </h2>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">${escapeHtml(m.summary)}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Perguntas que ela responde</h3>
+                            <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                ${m.questionsAnswered.map(q => `<li class="flex items-start gap-2"><span class="text-emerald-500 dark:text-[#00E676] mt-0.5">✓</span><span>${escapeHtml(q)}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Quem costuma usar</h3>
+                                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${escapeHtml(m.audience)}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-[#1F2937] text-xs text-slate-500 dark:text-slate-400">
+                                Dica: em toda a tela, o ícone <strong class="text-slate-800 dark:text-white">ⓘ</strong> ao lado dos títulos exibe uma explicação rápida ao passar o mouse.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Como acessar -->
+                <section id="sec-acesso" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">02</span>
+                        Como acessar
+                    </h2>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Caminho no menu lateral</div>
+                            <div class="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-[#00E676]">${escapeHtml(m.access)}</div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5">Para trocar para outra tela do B.I. sem voltar ao menu, use o botão <strong>Menu</strong> no canto superior direito.</p>
+                        </div>
+                        <div class="shrink-0 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs">
+                            <div class="font-bold">Permissão necessária: <span class="font-mono">${escapeHtml(m.permission)}</span></div>
+                            <div class="text-[11px] opacity-90">Confira no cadastro do usuário se a opção não aparecer.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Visão geral -->
+                <section id="sec-visao-geral" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">03</span>
+                        Visão geral da tela
+                    </h2>
+                    <ol class="space-y-2.5">
+                        ${m.overview.map((item, idx) => `
+                            <li class="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
+                                <span class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] font-mono text-xs font-bold flex items-center justify-center shrink-0 text-emerald-600 dark:text-[#00E676]">${idx + 1}</span>
+                                <span class="pt-0.5">${escapeHtml(item)}</span>
+                            </li>
+                        `).join('')}
+                    </ol>
+                    ${headerControlsHtml}
+                </section>
+
+                <!-- 4. Filtros -->
+                <section id="sec-filtros" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">04</span>
+                        Filtros da tela
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
+                        Abra a coluna clicando na aba <strong>"▶ Filtros"</strong>, selecione os critérios e clique em <strong>Filtrar</strong>. Use <strong>Limpar</strong> para restaurar o padrão e remover cliques nos gráficos.
+                    </p>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1F2937]">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 dark:bg-[#111827] text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-[#1F2937]">
+                                <tr>
+                                    <th class="px-4 py-2.5 font-bold">Filtro</th>
+                                    <th class="px-4 py-2.5 font-bold">O que faz</th>
+                                    <th class="px-4 py-2.5 font-bold">Observações para o suporte</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-[#1F2937]">
+                                ${m.filters.map(f => `
+                                    <tr class="hover:bg-slate-50/70 dark:hover:bg-[#111827]/60">
+                                        <td class="px-4 py-2.5 font-bold text-slate-900 dark:text-white whitespace-nowrap">${escapeHtml(f.name)}</td>
+                                        <td class="px-4 py-2.5 text-slate-700 dark:text-slate-300">${escapeHtml(f.desc)}</td>
+                                        <td class="px-4 py-2.5 text-slate-500 dark:text-slate-400">${escapeHtml(f.note)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ${extraTableHtml}
+                </section>
+
+                <!-- 5. Origem e regras dos dados -->
+                <section id="sec-regras" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">05</span>
+                        Quais dados entram nos números
+                    </h2>
+                    <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300 mb-4">
+                        ${m.dataRules.map(r => `<li class="flex items-start gap-2.5"><span class="text-emerald-500 dark:text-[#00E676] font-bold">▸</span><span>${escapeHtml(r)}</span></li>`).join('')}
+                    </ul>
+                    <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-xs sm:text-sm text-amber-900 dark:text-amber-200">
+                        <strong>Atenção para conferência:</strong> ${escapeHtml(m.dataRuleNote)}
+                    </div>
+                </section>
+
+                <!-- 6. Cards de indicadores -->
+                <section id="sec-cards" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">06</span>
+                        Cards de indicadores &amp; Comparação (▲ / ▼)
+                    </h2>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#1F2937] mb-4">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-50 dark:bg-[#111827] text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-[#1F2937]">
+                                <tr>
+                                    <th class="px-4 py-2.5 font-bold">Card</th>
+                                    <th class="px-4 py-2.5 font-bold">O que mostra</th>
+                                    <th class="px-4 py-2.5 font-bold">Como é calculado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-[#1F2937]">
+                                ${m.cards.map(c => `
+                                    <tr class="hover:bg-slate-50/70 dark:hover:bg-[#111827]/60">
+                                        <td class="px-4 py-2.5 font-mono text-xs font-bold text-emerald-700 dark:text-[#00E676] whitespace-nowrap">${escapeHtml(c.name)}</td>
+                                        <td class="px-4 py-2.5 text-slate-700 dark:text-slate-300">${escapeHtml(c.desc)}</td>
+                                        <td class="px-4 py-2.5 text-slate-500 dark:text-slate-400">${escapeHtml(c.calc)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                        <strong class="text-slate-900 dark:text-white">Comparação com outro período (▲ / ▼):</strong> ${escapeHtml(m.comparisonNote)}
+                    </div>
+                </section>
+
+                <!-- 7. Gráficos e Tabelas -->
+                <section id="sec-graficos" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">07</span>
+                        Passo a passo dos gráficos e matrizes
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${m.charts.map((ch, i) => `
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white mb-2">
+                                        <span class="font-mono text-xs text-emerald-600 dark:text-[#00E676] mr-1">7.${i + 1}</span>
+                                        ${escapeHtml(ch.title)}
+                                    </h3>
+                                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-2"><strong class="text-slate-800 dark:text-slate-100">O que mostra:</strong> ${escapeHtml(ch.shows)}</p>
+                                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-2"><strong class="text-slate-800 dark:text-slate-100">Para que serve:</strong> ${escapeHtml(ch.purpose)}</p>
+                                </div>
+                                <div class="mt-2 pt-2.5 border-t border-slate-200 dark:border-[#1F2937] text-xs text-slate-500 dark:text-slate-400">
+                                    <strong class="text-slate-700 dark:text-slate-200">Como ler:</strong> ${escapeHtml(ch.howToRead)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+
+                <!-- 8. Filtro Cruzado -->
+                <section id="sec-filtro-cruzado" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">08</span>
+                        Filtro cruzado (clicar nos gráficos)
+                    </h2>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(m.crossFilter)}</p>
+                </section>
+
+                <!-- 9. Uso no Dia a Dia -->
+                <section id="sec-dia-a-dia" class="rounded-2xl bg-white dark:bg-[#161E29] border border-slate-200 dark:border-[#1F2937] p-5 sm:p-6">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]">09</span>
+                        Usando a tela no dia a dia
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        ${m.dailyUse.map(d => `
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                                <h3 class="font-bold text-sm text-emerald-700 dark:text-[#00E676] mb-1">${escapeHtml(d.title)}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${escapeHtml(d.objective)}</p>
+                                <ol class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300 list-decimal list-inside">
+                                    ${d.steps.map(st => `<li>${escapeHtml(st)}</li>`).join('')}
+                                </ol>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+        }
+
+        // ================= ABA 2: FAQ SUPORTE =================
+        function renderFaqList() {
+            const manual = MANUALS.find(m => m.id === currentManualId);
+            if (!manual) return;
+
+            const q = normalizeText(document.getElementById('faqLocalSearch').value);
+            const container = document.getElementById('faqListContainer');
+
+            const filtered = manual.faq.filter(item =>
+                !q || normalizeText(item.q).includes(q) || normalizeText(item.a).includes(q)
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-sm text-slate-500 dark:text-slate-400 py-6 text-center">Nenhuma dúvida encontrada para "${escapeHtml(document.getElementById('faqLocalSearch').value)}".</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map((item, idx) => `
+                <details class="group rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] open:border-emerald-400 dark:open:border-[#00E676]/50 transition-colors" ${idx < 3 || q ? 'open' : ''}>
+                    <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer list-none font-bold text-sm text-slate-900 dark:text-white">
+                        <span class="flex items-start gap-2.5">
+                            <span class="font-mono text-xs text-emerald-600 dark:text-[#00E676] mt-0.5">Q.</span>
+                            <span>"${escapeHtml(item.q)}"</span>
+                        </span>
+                        <svg class="w-4 h-4 shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </summary>
+                    <div class="px-4 pb-4 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-200/70 dark:border-[#1F2937]">
+                        <span class="font-bold text-emerald-700 dark:text-[#00E676] mr-1">Suporte:</span>
+                        ${escapeHtml(item.a)}
+                    </div>
+                </details>
+            `).join('');
+        }
+
+        // ================= ABA 3: ROTEIRO PRÁTICO =================
+        function renderPracticeTab() {
+            const manual = MANUALS.find(m => m.id === currentManualId);
+            if (!manual) return;
+
+            const completed = practiceState[manual.id] || [];
+            const total = manual.practice.length;
+            const pct = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+
+            document.getElementById('practicePctBadge').textContent = `${pct}%`;
+            document.getElementById('practiceProgressText').textContent = `${completed.length} de ${total} passos concluídos`;
+            document.getElementById('practiceProgressPercent').textContent = `${pct}%`;
+            document.getElementById('practiceProgressBar').style.width = `${pct}%`;
+
+            const container = document.getElementById('practiceChecklistContainer');
+            container.innerHTML = manual.practice.map((step, idx) => {
+                const isDone = completed.includes(idx);
+                return `
+                    <label class="flex items-start gap-3.5 p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        isDone
+                            ? 'bg-emerald-50/70 dark:bg-[#00E676]/10 border-emerald-300 dark:border-[#00E676]/40'
+                            : 'bg-slate-50 dark:bg-[#111827] border-slate-200 dark:border-[#1F2937] hover:border-emerald-400 dark:hover:border-[#00E676]/40'
+                    }">
+                        <input
+                            type="checkbox"
+                            class="mt-0.5 w-5 h-5 rounded accent-emerald-600 dark:accent-[#00E676] cursor-pointer shrink-0"
+                            ${isDone ? 'checked' : ''}
+                            onchange="togglePracticeStep('${manual.id}', ${idx})"
+                        >
+                        <span class="text-sm leading-relaxed ${isDone ? 'line-through text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200'}">
+                            <strong class="font-mono text-xs text-emerald-600 dark:text-[#00E676] mr-1.5">${idx + 1}.</strong>
+                            ${escapeHtml(step)}
+                        </span>
+                    </label>
+                `;
+            }).join('');
+        }
+
+        function togglePracticeStep(manualId, stepIndex) {
+            if (!practiceState[manualId]) practiceState[manualId] = [];
+            const i = practiceState[manualId].indexOf(stepIndex);
+            if (i > -1) {
+                practiceState[manualId].splice(i, 1);
+            } else {
+                practiceState[manualId].push(stepIndex);
+            }
+            savePracticeState();
+            renderPracticeTab();
+            updateGlobalPracticeStat();
+        }
+
+        function resetCurrentPractice() {
+            if (!currentManualId) return;
+            practiceState[currentManualId] = [];
+            savePracticeState();
+            renderPracticeTab();
+            updateGlobalPracticeStat();
+            showToast('Checklist reiniciado.', 'success');
+        }
+
+        // ================= ABA 4: VISUALIZAR PDF =================
+        async function renderPdfViewerTab(manual) {
+            const wrapper = document.getElementById('pdfViewerWrapper');
+            const localPdf = uploadedPdfs[manual.id];
+
+            if (localPdf) {
+                wrapper.innerHTML = buildEmbeddedPdfHtml(manual, localPdf.url, localPdf.fileName, 'Arquivo oficial anexado localmente');
+                return;
+            }
+
+            // Se hospedado via HTTP/HTTPS, checa se existe o PDF na pasta ./pdfs/
+            const staticExists = await checkStaticPdfExists(manual.pdfPath);
+            if (staticExists) {
+                wrapper.innerHTML = buildEmbeddedPdfHtml(manual, manual.pdfPath, manual.pdfName, 'Arquivo oficial carregado da pasta ./pdfs/');
+                return;
+            }
+
+            // Estado limpo quando o PDF oficial ainda não foi anexado
+            wrapper.innerHTML = `
+                <div class="text-center py-10 px-4 max-w-xl mx-auto">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] text-emerald-600 dark:text-[#00E676] flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2">PDF Oficial ainda não anexado</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-2">
+                        Caminho esperado na hospedagem: <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-slate-100 dark:bg-[#111827] text-emerald-700 dark:text-[#00E676]">${escapeHtml(manual.pdfPath)}</code>
+                    </p>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-6">
+                        Você pode anexar o arquivo <code class="font-mono">.pdf</code> do seu computador para visualizá-lo aqui agora mesmo, ou gerar instantaneamente um PDF formatado com todo o conteúdo deste manual.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button type="button" onclick="openPdfManagerModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#111827] dark:hover:bg-[#1F2937] border border-slate-200 dark:border-[#1F2937] text-slate-800 dark:text-white text-sm font-bold transition-colors">
+                            Anexar PDF Oficial
+                        </button>
+                        <button type="button" onclick="generateFallbackPdf('${manual.id}')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#22C55E] text-white dark:text-[#0B0F14] text-sm font-bold shadow-sm transition-all active:scale-95">
+                            Gerar PDF do Resumo Agora
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildEmbeddedPdfHtml(manual, url, fileName, badgeText) {
+            return `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-[#00E676]">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#00E676]"></span>
+                            ${escapeHtml(badgeText)}
+                        </span>
+                        <div class="text-xs font-mono text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(fileName)}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="${url}" download="${escapeHtml(fileName)}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#22C55E] text-white dark:text-[#0B0F14] text-xs font-bold transition-colors">
+                            Baixar PDF Original
+                        </a>
+                        <a href="${url}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937] text-xs font-semibold text-slate-700 dark:text-slate-200">
+                            Abrir em Nova Aba
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full h-[70vh] rounded-xl overflow-hidden border border-slate-200 dark:border-[#1F2937] bg-slate-900">
+                    <iframe src="${url}" class="w-full h-full" title="Visualizador de PDF - ${escapeHtml(manual.title)}"></iframe>
+                </div>
+            `;
+        }
+
+        // ================= GERENCIADOR / UPLOAD DE PDFs =================
+        function openPdfManagerModal() {
+            renderPdfManagerList();
+            document.getElementById('pdfManagerModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closePdfManagerModal() {
+            document.getElementById('pdfManagerModal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function renderPdfManagerList() {
+            const list = document.getElementById('pdfManagerList');
+            list.innerHTML = MANUALS.map(m => {
+                const linked = uploadedPdfs[m.id];
+                return `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-[#1F2937]">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs font-bold text-emerald-600 dark:text-[#00E676]">${m.num}</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">${escapeHtml(m.title)}</span>
+                            </div>
+                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">
+                                ${linked ? `Vinculado: ${escapeHtml(linked.fileName)}` : `Esperado: ${escapeHtml(m.pdfPath)}`}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            ${linked ? `
+                                <button type="button" onclick="removeLinkedPdf('${m.id}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors">
+                                    Remover
+                                </button>
+                            ` : ''}
+                            <label class="px-3 py-1.5 rounded-lg bg-white dark:bg-[#161E29] border border-slate-300 dark:border-[#1F2937] hover:border-emerald-500 dark:hover:border-[#00E676] text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer transition-colors">
+                                ${linked ? 'Trocar PDF' : 'Selecionar PDF'}
+                                <input type="file" accept="application/pdf,.pdf" class="hidden" onchange="handleSinglePdfFile('${m.id}', this.files[0])">
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handleSinglePdfFile(manualId, file) {
+            if (!file) return;
+            linkPdfToManual(manualId, file);
+            renderPdfManagerList();
+            refreshAfterPdfChange();
+            showToast(`PDF vinculado com sucesso!`, 'success');
+        }
+
+        /**
+         * Detecta automaticamente pelo número (01..08) ou nome do arquivo qual manual corresponde.
+         */
+        function handleBulkPdfFiles(fileList) {
+            if (!fileList || fileList.length === 0) return;
+            let matchedCount = 0;
+
+            Array.from(fileList).forEach(file => {
+                if (!file.name.toLowerCase().endsWith('.pdf')) return;
+                const normName = normalizeText(file.name);
+
+                // 1. Tenta detectar pelo número 01 a 08 no início ou no nome
+                let target = MANUALS.find(m => new RegExp(`(^|\\D)${m.num}(\\D|$)`).test(file.name));
+
+                // 2. Fallback por palavras-chave do título
+                if (!target) {
+                    target = MANUALS.find(m => {
+                        const slugWords = normalizeText(m.title).split(/\s+/).filter(w => w.length > 3 && w !== 'analise');
+                        return slugWords.some(w => normName.includes(w));
+                    });
+                }
+
+                if (target) {
+                    linkPdfToManual(target.id, file);
+                    matchedCount++;
+                }
+            });
+
+            document.getElementById('bulkPdfInput').value = '';
+            renderPdfManagerList();
+            refreshAfterPdfChange();
+
+            if (matchedCount > 0) {
+                showToast(`${matchedCount} arquivo(s) PDF vinculado(s) automaticamente!`, 'success');
+            } else {
+                showToast('Não foi possível identificar o número (01-08) no nome do PDF. Vincule manualmente na lista abaixo.', 'error');
+            }
+        }
+
+        function linkPdfToManual(manualId, file) {
+            if (uploadedPdfs[manualId] && uploadedPdfs[manualId].url) {
+                URL.revokeObjectURL(uploadedPdfs[manualId].url);
+            }
+            uploadedPdfs[manualId] = {
+                url: URL.createObjectURL(file),
+                fileName: file.name,
+                size: file.size
+            };
+        }
+
+        function removeLinkedPdf(manualId) {
+            if (uploadedPdfs[manualId] && uploadedPdfs[manualId].url) {
+                URL.revokeObjectURL(uploadedPdfs[manualId].url);
+            }
+            delete uploadedPdfs[manualId];
+            renderPdfManagerList();
+            refreshAfterPdfChange();
+            showToast('Vínculo de PDF removido.', 'success');
+        }
+
+        function refreshAfterPdfChange() {
+            const count = Object.keys(uploadedPdfs).length;
+            const badge = document.getElementById('uploadedPdfCounterBadge');
+            badge.textContent = count;
+            badge.classList.toggle('hidden', count === 0);
+
+            renderCatalog();
+            if (currentManualId) {
+                const manual = MANUALS.find(m => m.id === currentManualId);
+                if (manual) {
+                    updateSidebarPdfStatus(manual);
+                    renderPdfViewerTab(manual);
+                }
+            }
+        }
+
+        function renderFolderStructureText() {
+            const lines = [
+                'meu-portal-bi/',
+                '├── index.html',
+                '└── pdfs/',
+                ...MANUALS.map((m, idx) => `    ${idx === MANUALS.length - 1 ? '└──' : '├──'} ${m.pdfName}`)
+            ];
+            document.getElementById('folderStructurePre').textContent = lines.join('\n');
+        }
+
+        function copyFolderStructure() {
+            const text = document.getElementById('folderStructurePre').textContent;
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast('Estrutura de pastas copiada!', 'success');
+            } catch (e) {
+                showToast('Não foi possível copiar automaticamente.', 'error');
+            }
+            document.body.removeChild(temp);
+        }
+
+        // ================= DOWNLOAD INTELIGENTE DE PDF =================
+        async function checkStaticPdfExists(path) {
+            if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') {
+                return false;
+            }
+            try {
+                const res = await fetch(path, { method: 'HEAD' });
+                return res.ok;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        /**
+         * 1º baixa PDF local anexado; 2º tenta arquivo estático em ./pdfs/; 3º gera PDF completo via jsPDF sem erro 404.
+         */
+        async function smartDownloadPdf(manualId) {
+            const manual = MANUALS.find(m => m.id === manualId);
+            if (!manual) return;
+
+            // 1. PDF local anexado no gerenciador
+            if (uploadedPdfs[manual.id]) {
+                const a = document.createElement('a');
+                a.href = uploadedPdfs[manual.id].url;
+                a.download = uploadedPdfs[manual.id].fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showToast(`Baixando PDF oficial: ${uploadedPdfs[manual.id].fileName}`, 'success');
+                return;
+            }
+
+            // 2. Verifica arquivo estático na pasta ./pdfs/
+            const existsStatic = await checkStaticPdfExists(manual.pdfPath);
+            if (existsStatic) {
+                const a = document.createElement('a');
+                a.href = manual.pdfPath;
+                a.download = manual.pdfName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showToast(`Baixando PDF oficial da pasta ./pdfs/`, 'success');
+                return;
+            }
+
+            // 3. Fallback suave gerando PDF completo via jsPDF
+            generateFallbackPdf(manual.id);
+        }
+
+        /**
+         * Gera PDF completo e bem formatado via jsPDF com cabeçalho "Wiki Gestão Web – B.I.",
+         * filtros, cards, gráficos, dúvidas comuns e roteiro prático.
+         */
+        function generateFallbackPdf(manualId) {
+            const m = MANUALS.find(x => x.id === manualId);
+            if (!m) return;
+
+            try {
+                if (!window.jspdf || !window.jspdf.jsPDF) {
+                    showToast('Biblioteca jsPDF ainda carregando. Tente novamente em segundos.', 'error');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const pageW = doc.internal.pageSize.getWidth();
+                const pageH = doc.internal.pageSize.getHeight();
+                const marginX = 18;
+                const contentW = pageW - marginX * 2;
+                const bottomLimit = pageH - 22;
+                let y = 0;
+
+                function ensureSpace(h) {
+                    if (y + h > bottomLimit) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                }
+
+                function addSectionHeading(text) {
+                    ensureSpace(14);
+                    y += 3;
+                    doc.setFillColor(17, 24, 39);
+                    doc.roundedRect(marginX, y - 4.5, contentW, 7.5, 1.5, 1.5, 'F');
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(10.5);
+                    doc.setTextColor(0, 230, 118);
+                    doc.text(text, marginX + 3.5, y + 0.7);
+                    y += 8;
+                }
+
+                function addWrappedText(text, fontSize = 9.5, isBold = false, color = [51, 65, 85], indent = 0) {
+                    doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+                    doc.setFontSize(fontSize);
+                    doc.setTextColor(...color);
+                    const lines = doc.splitTextToSize(text, contentW - indent);
+                    lines.forEach(line => {
+                        ensureSpace(5);
+                        doc.text(line, marginX + indent, y);
+                        y += fontSize * 0.46;
+                    });
+                    y += 1.5;
+                }
+
+                // Cabeçalho de capa
+                doc.setFillColor(11, 15, 20);
+                doc.rect(0, 0, pageW, 24, 'F');
+                doc.setFillColor(0, 230, 118);
+                doc.rect(0, 24, pageW, 1.5, 'F');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(14);
+                doc.setTextColor(255, 255, 255);
+                doc.text('Wiki Gestao Web – B.I.', marginX, 11.5);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(0, 230, 118);
+                doc.text(`Manual ${m.num}  |  Modulo: ${m.module}  |  Permissao: ${m.permission}`, marginX, 18.5);
+
+                y = 35;
+
+                // Título e resumo
+                addWrappedText(m.title, 17, true, [15, 23, 42]);
+                addWrappedText(m.summary, 10, false, [71, 85, 105]);
+                addWrappedText(`Acesso: ${m.access} (Permissao: ${m.permission})`, 9.5, true, [5, 150, 105]);
+                y += 2;
+
+                // Filtros
+                addSectionHeading('1. FILTROS DA TELA');
+                m.filters.forEach(f => {
+                    addWrappedText(`• ${f.name}: ${f.desc} (${f.note})`, 9.2, false, [30, 41, 59], 2);
+                });
+
+                // Regras
+                addSectionHeading('2. REGRAS DE DADOS');
+                m.dataRules.forEach(r => addWrappedText(`• ${r}`, 9.2, false, [30, 41, 59], 2));
+                addWrappedText(`Atencao: ${m.dataRuleNote}`, 9, true, [146, 64, 14], 2);
+
+                // Cards
+                addSectionHeading('3. CARDS DE INDICADORES');
+                m.cards.forEach(c => {
+                    addWrappedText(`• ${c.name}: ${c.desc} — Calculo: ${c.calc}`, 9.2, false, [30, 41, 59], 2);
+                });
+                addWrappedText(`Comparacao: ${m.comparisonNote}`, 9, false, [71, 85, 105], 2);
+
+                // Gráficos
+                addSectionHeading('4. GRAFICOS E TABELAS');
+                m.charts.forEach((ch, idx) => {
+                    addWrappedText(`${idx + 1}. ${ch.title}`, 10, true, [15, 23, 42], 1);
+                    addWrappedText(`Mostra: ${ch.shows} | Como ler: ${ch.howToRead}`, 9, false, [51, 65, 85], 3);
+                });
+
+                // Dúvidas Comuns
+                addSectionHeading('5. DUVIDAS COMUNS (SUPORTE)');
+                m.faq.forEach(f => {
+                    addWrappedText(`P: "${f.q}"`, 9.3, true, [15, 23, 42], 1);
+                    addWrappedText(`R: ${f.a}`, 9, false, [51, 65, 85], 3);
+                });
+
+                // Roteiro Prático
+                addSectionHeading('6. ROTEIRO PARA PRATICAR');
+                m.practice.forEach((p, idx) => {
+                    addWrappedText(`[ ] ${idx + 1}. ${p}`, 9.2, false, [30, 41, 59], 2);
+                });
+
+                // Rodapé em todas as páginas
+                const totalPages = doc.internal.getNumberOfPages();
+                const dateStr = new Date().toLocaleDateString('pt-BR');
+                for (let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    doc.setDrawColor(226, 232, 240);
+                    doc.line(marginX, pageH - 14, pageW - marginX, pageH - 14);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8);
+                    doc.setTextColor(148, 163, 184);
+                    doc.text(`Wiki Gestao Web – Central de Manuais B.I. • Gerado em ${dateStr}`, marginX, pageH - 9);
+                    doc.text(`Pagina ${i} de ${totalPages}`, pageW - marginX, pageH - 9, { align: 'right' });
+                }
+
+                doc.save(m.pdfName);
+                showToast(`PDF gerado e baixado: ${m.pdfName}`, 'success');
+            } catch (err) {
+                console.error(err);
+                showToast('Erro ao gerar o PDF. Tente novamente.', 'error');
+            }
+        }
+
+        // ================= UTILITÁRIOS =================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const isOk = type === 'success';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border text-xs sm:text-sm font-semibold transform transition-all duration-300 translate-y-2 opacity-0 ${
+                isOk
+                    ? 'bg-slate-900 dark:bg-[#161E29] text-white border-slate-700 dark:border-[#00E676]/40'
+                    : 'bg-rose-600 text-white border-rose-500'
+            }`;
+
+            toast.innerHTML = `
+                <span class="w-2 h-2 rounded-full shrink-0 ${isOk ? 'bg-[#00E676]' : 'bg-white'}"></span>
+                <span class="flex-1">${escapeHtml(message)}</span>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function normalizeText(str) {
+            return (str || '')
+                .toString()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function escapeHtml(str) {
+            return (str || '')
+                .toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
