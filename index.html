@@ -64,21 +64,26 @@
             <!-- Renderizado dinamicamente via JS -->
         </nav>
 
-        <!-- Rodapé da Sidebar: Nova Área -->
-        <div class="p-3 border-t border-slate-200 dark:border-[#243040] space-y-2">
+        <!-- Rodapé Clicável da Sidebar: Controle de Versão -->
+        <div class="p-3 border-t border-slate-200 dark:border-[#243040]">
             <button
                 type="button"
-                onclick="openNewAreaModal()"
-                class="w-full inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1A2330] dark:hover:bg-[#243040] border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors"
+                onclick="openVersionPage()"
+                id="sidebarFooterVersionBtn"
+                class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1A2330] dark:hover:bg-[#243040] border border-slate-200 dark:border-[#243040] transition-colors text-left group"
+                title="Abrir Controle de Versão & Desenvolvimento"
             >
-                <svg class="w-4 h-4 text-emerald-600 dark:text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#00E676] shrink-0"></span>
+                    <div class="truncate">
+                        <div class="text-[11px] font-bold text-slate-800 dark:text-slate-100 truncate">Versão 1.2.0 • Nov/2026</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Ver changelog e roadmap</div>
+                    </div>
+                </div>
+                <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-[#00E676] shrink-0 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-                Nova Área / Menu
             </button>
-            <div class="text-[10px] text-center text-slate-400 dark:text-slate-500">
-                Portal Escalável • Versão 1 – Nov/2026
-            </div>
         </div>
     </aside>
 
@@ -107,37 +112,12 @@
                     </div>
                 </div>
 
-                <!-- Direita: Ações Rápidas -->
-               <!-- <div class="flex items-center gap-2">
-                    <button
-                        type="button"
-                        onclick="openPdfManagerModal()"
-                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#141B24] dark:hover:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors"
-                    >
-                        <svg class="w-4 h-4 text-emerald-600 dark:text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        <span class="hidden sm:inline">Gerenciar / Subir PDFs</span>
-                        <span class="sm:hidden">PDFs</span>
-                        <span id="uploadedPdfCounterBadge" class="hidden px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14]">0</span>
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="openNewManualModal()"
-                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold shadow-xs transition-all active:scale-95"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        <span>Novo Manual</span>
-                    </button> -->
-
-                    <!-- Alternar Dark / Light Mode -->
+                <!-- Direita: Alternar Dark / Light Mode -->
+                <div class="flex items-center gap-2 shrink-0">
                     <button
                         type="button"
                         onclick="toggleTheme()"
-                        class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#141B24] dark:hover:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-slate-700 dark:text-slate-200 transition-colors"
+                        class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#141B24] dark:hover:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors"
                         title="Alternar tema Claro / Escuro"
                         aria-label="Alternar tema Claro / Escuro"
                     >
@@ -147,6 +127,8 @@
                         <svg class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
                         </svg>
+                        <span class="hidden sm:inline dark:hidden">Modo Escuro</span>
+                        <span class="hidden sm:dark:inline">Modo Claro</span>
                     </button>
                 </div>
             </div>
@@ -373,200 +355,316 @@
             </div>
         </div>
 
+        <!-- ================= VIEW 3: CONTROLE DE VERSÃO & DESENVOLVIMENTO ================= -->
+        <main id="versionView" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-7">
+            
+            <!-- Hero / Resumo -->
+            <section class="rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] p-5 sm:p-7 shadow-xs relative overflow-hidden">
+                <div class="hidden dark:block pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#00E676]/10 blur-3xl"></div>
+
+                <div class="relative z-10 max-w-3xl mb-6">
+                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-[#00E676]/10 border border-emerald-200 dark:border-[#00E676]/25 text-emerald-700 dark:text-[#00E676] text-[11px] font-bold mb-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#00E676] animate-pulse"></span>
+                        Controle de Versão &amp; Roadmap
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+                        Versões &amp; Desenvolvimento
+                    </h1>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Acompanhe o histórico de atualizações do portal Wiki Gestão Web, a cobertura de documentação por módulo do ERP e as próximas entregas planejadas.
+                    </p>
+                </div>
+
+                <!-- 4 Cards de Resumo -->
+                <div class="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040]">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Versão Atual</div>
+                        <div id="verStatCurrent" class="font-mono text-2xl font-extrabold text-emerald-600 dark:text-[#00E676]">v1.2.0</div>
+                        <div id="verStatDate" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">19/11/2026</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040]">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Manuais Publicados</div>
+                        <div id="verStatManuals" class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">8</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Leitura + PDF</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040]">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Módulos do ERP</div>
+                        <div id="verStatModules" class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">11</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Dashboard + 10 módulos</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040]">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Próximas Entregas</div>
+                        <div id="verStatRoadmap" class="font-mono text-2xl font-extrabold text-amber-600 dark:text-amber-400">7</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Itens no roadmap</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção: Cobertura de Documentação por Módulo -->
+            <section class="rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] p-5 sm:p-6 shadow-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Cobertura de Documentação por Módulo</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Clique em qualquer módulo para abrir diretamente os manuais daquela área.</p>
+                    </div>
+                    <div id="coverageSummaryBadge" class="self-start sm:self-auto px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-[#00E676]/10 text-emerald-700 dark:text-[#00E676] border border-emerald-200 dark:border-[#00E676]/30"></div>
+                </div>
+                <div id="moduleCoverageGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+                    <!-- Renderizado via JS -->
+                </div>
+            </section>
+
+            <!-- Seção: Histórico de Versões (Changelog) -->
+            <section class="rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] p-5 sm:p-6 shadow-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Histórico de Versões (Changelog)</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Registro cronológico de novidades, melhorias e correções aplicadas ao portal.</p>
+                    </div>
+                    <div id="changelogFilterPills" class="flex flex-wrap items-center gap-1.5">
+                        <!-- Filtros via JS -->
+                    </div>
+                </div>
+
+                <div id="changelogTimeline" class="relative pl-6 border-l-2 border-slate-200 dark:border-[#243040] space-y-6">
+                    <!-- Timeline via JS -->
+                </div>
+            </section>
+
+            <!-- Seção: Roadmap de Desenvolvimento -->
+            <section class="rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] p-5 sm:p-6 shadow-xs">
+                <div class="mb-5">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Roadmap de Desenvolvimento</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Evolução planejada para os manuais, PDFs ilustrados e recursos da central.</p>
+                </div>
+                <div id="roadmapGrid" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <!-- 3 Colunas via JS -->
+                </div>
+            </section>
+        </main>
+
         <!-- Rodapé -->
         <footer class="mt-auto border-t border-slate-200 dark:border-[#243040] bg-white dark:bg-[#0B0F14] print:hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
                 <div><strong class="text-slate-800 dark:text-white">Wiki Gestão Web</strong> • Central de Manuais e Passo a Passo</div>
-                <div>Documentação Interna para Equipe de Suporte &amp; Clientes</div>
+                <div>Documentação para Equipe de Suporte &amp; Clientes</div>
             </div>
         </footer>
     </div>
-
-    <!-- ================= MODAL 1: GERENCIAR / SUBIR PDFs ================= -->
-    <div id="pdfManagerModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/70 backdrop-blur-xs" onclick="closePdfManagerModal()"></div>
-        <div class="fixed inset-0 z-10 overflow-y-auto p-3 sm:p-6 flex items-start justify-center">
-            <div class="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] shadow-2xl my-4 sm:my-8 overflow-hidden flex flex-col max-h-[90vh]">
-                
-                <div class="px-6 py-4 border-b border-slate-200 dark:border-[#243040] flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Gerenciar &amp; Subir PDFs</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Vincule PDFs aos manuais existentes ou crie um novo manual a partir de um PDF.</p>
-                    </div>
-                    <button type="button" onclick="closePdfManagerModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1A2330]" aria-label="Fechar">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-
-                <div class="overflow-y-auto p-6 space-y-6">
-                    <!-- Drag & Drop em lote -->
-                    <div
-                        id="pdfDropZone"
-                        onclick="document.getElementById('bulkPdfInput').click()"
-                        class="rounded-2xl border-2 border-dashed border-slate-300 dark:border-[#243040] hover:border-emerald-500 dark:hover:border-[#00E676] bg-slate-50 dark:bg-[#1A2330] p-6 text-center transition-colors cursor-pointer"
-                    >
-                        <input type="file" id="bulkPdfInput" accept="application/pdf,.pdf" multiple class="hidden" onchange="handleBulkPdfFiles(this.files)">
-                        <div class="w-11 h-11 mx-auto mb-2.5 rounded-xl bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-600 dark:text-[#00E676] flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
-                        </div>
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">Arraste múltiplos arquivos .pdf aqui ou clique para selecionar</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Detecta automaticamente prefixos <span class="font-mono">01</span> a <span class="font-mono">08</span> do Power BI ou vincule manualmente abaixo.</p>
-                    </div>
-
-                    <!-- Criar novo manual rápido a partir de um PDF -->
-                    <div class="rounded-xl bg-emerald-50/60 dark:bg-[#00E676]/5 border border-emerald-200 dark:border-[#00E676]/25 p-4">
-                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white mb-1">Subir PDF como Novo Manual em qualquer Área</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">Adicione um novo arquivo PDF diretamente em Power BI, Vendas &amp; PDV, Fiscal &amp; NF-e, Financeiro ERP, Integrações ou áreas criadas por você.</p>
-                        <form id="quickPdfManualForm" onsubmit="handleQuickPdfManualSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Área / Menu *</label>
-                                <select id="quickPdfAreaSelect" required class="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-xs text-slate-900 dark:text-white outline-none"></select>
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Arquivo PDF *</label>
-                                <input type="file" id="quickPdfFileInput" accept="application/pdf,.pdf" required class="w-full text-xs text-slate-600 dark:text-slate-300 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 dark:file:bg-[#00E676] file:text-white dark:file:text-[#0B0F14] cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Título do Manual *</label>
-                                <input type="text" id="quickPdfTitle" required placeholder="Ex: Emissão de NF-e de Devolução" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-xs text-slate-900 dark:text-white outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Resumo curto *</label>
-                                <input type="text" id="quickPdfSummary" required placeholder="Passo a passo para emitir nota de devolução..." class="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-xs text-slate-900 dark:text-white outline-none">
-                            </div>
-                            <div class="sm:col-span-2 flex justify-end">
-                                <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold transition-all">
-                                    Publicar PDF na Área Selecionada
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Lista de vínculos existentes -->
-                    <div>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-2.5">Vincular PDFs aos Manuais Cadastrados</h3>
-                        <div id="pdfManagerList" class="space-y-2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= MODAL 2: + NOVO MANUAL ================= -->
-    <div id="newManualModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/70 backdrop-blur-xs" onclick="closeNewManualModal()"></div>
-        <div class="fixed inset-0 z-10 overflow-y-auto p-3 sm:p-6 flex items-start justify-center">
-            <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] shadow-2xl my-4 sm:my-8 overflow-hidden flex flex-col max-h-[90vh]">
-                
-                <div class="px-6 py-4 border-b border-slate-200 dark:border-[#243040] flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Novo Manual / Passo a Passo</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Cadastre um novo guia em qualquer menu da central (salvo no navegador).</p>
-                    </div>
-                    <button type="button" onclick="closeNewManualModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1A2330]" aria-label="Fechar">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-
-                <form id="newManualForm" onsubmit="handleNewManualSubmit(event)" class="overflow-y-auto p-6 space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Área / Menu *</label>
-                            <select id="nmArea" required onchange="toggleSubmoduleField()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-sm text-slate-900 dark:text-white outline-none"></select>
-                        </div>
-                        <div id="nmSubmoduleWrapper">
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Submódulo (Power BI)</label>
-                            <select id="nmSubmodule" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-sm text-slate-900 dark:text-white outline-none">
-                                <option value="Comercial">Comercial</option>
-                                <option value="Financeiro">Financeiro</option>
-                                <option value="Produção">Produção</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Título do Manual *</label>
-                        <input type="text" id="nmTitle" required placeholder="Ex: PDV – Abertura e Fechamento de Caixa" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] focus:border-emerald-500 dark:focus:border-[#00E676] text-sm text-slate-900 dark:text-white outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Resumo objetivo *</label>
-                        <textarea id="nmSummary" rows="2" required placeholder="Descreva em poucas linhas o que este manual ensina..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] focus:border-emerald-500 dark:focus:border-[#00E676] text-sm text-slate-900 dark:text-white outline-none"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Caminho de acesso no sistema</label>
-                            <input type="text" id="nmAccess" placeholder="Ex: Menu lateral > Vendas > PDV" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-sm text-slate-900 dark:text-white outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Anexar PDF Real (Opcional)</label>
-                            <input type="file" id="nmPdfFile" accept="application/pdf,.pdf" class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-200 dark:file:bg-[#1A2330] file:text-slate-800 dark:file:text-white cursor-pointer">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Passos principais (um por linha)</label>
-                        <textarea id="nmSteps" rows="4" placeholder="1. Acesse a tela desejada&#10;2. Preencha os filtros ou campos obrigatórios&#10;3. Salve e confira o resultado" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-sm text-slate-900 dark:text-white outline-none"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Dúvida Comum / FAQ (Opcional — formato: Pergunta | Resposta, uma por linha)</label>
-                        <textarea id="nmFaq" rows="2" placeholder="Como reimprimir o comprovante? | Acesse o histórico do caixa e clique no ícone de impressora." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] text-sm text-slate-900 dark:text-white outline-none"></textarea>
-                    </div>
-
-                    <div class="pt-3 border-t border-slate-200 dark:border-[#243040] flex justify-end gap-2">
-                        <button type="button" onclick="closeNewManualModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-600 dark:text-slate-300">Cancelar</button>
-                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold shadow-xs">
-                            Salvar Manual
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= MODAL 3: + NOVA ÁREA / MENU ================= -->
-    <!-- <div id="newAreaModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/70 backdrop-blur-xs" onclick="closeNewAreaModal()"></div>
-        <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
-            <div class="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] shadow-2xl p-6">
-                <h2 class="text-lg font-extrabold text-slate-900 dark:text-white mb-1">Nova Área / Menu</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Crie uma nova categoria na barra lateral para organizar futuros PDFs.</p>
-                <form onsubmit="handleNewAreaSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nome da Área *</label>
-                        <input type="text" id="newAreaNameInput" required placeholder="Ex: Estoque & Logística, RH, E-Commerce..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B0F14] border border-slate-200 dark:border-[#243040] focus:border-emerald-500 dark:focus:border-[#00E676] text-sm text-slate-900 dark:text-white outline-none">
-                    </div>
-                    <div class="flex justify-end gap-2">
-                        <button type="button" onclick="closeNewAreaModal()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-600 dark:text-slate-300">Cancelar</button>
-                        <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] text-xs font-extrabold">Criar Área</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>  -->
 
     <!-- ================= TOASTS ================= -->
     <div id="toastContainer" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 max-w-sm w-[calc(100%-2.5rem)] pointer-events-none print:hidden"></div>
 
     <!-- ================= LÓGICA JAVASCRIPT ================= -->
     <script>
+        /* =========================================================================
+         * CONFIGURAÇÃO DE VERSÃO, CHANGELOG E ROADMAP
+         * Atualize os arrays abaixo sempre que publicar uma nova versão no Netlify.
+         * ========================================================================= */
+        const APP_VERSION = {
+            current: 'v1.2.0',
+            short: 'v1.2',
+            date: '19/11/2026',
+            label: 'Versão 1.2.0 • Nov/2026'
+        };
+
         /**
-         * ÁREAS PADRÃO DO PORTAL (ESCALÁVEL)
+         * HISTÓRICO DE VERSÕES (CHANGELOG)
+         * Tags suportadas: 'Novo' | 'Melhoria' | 'Correção'
          */
-        const DEFAULT_AREAS = [
-            { id: 'power-bi', name: 'Power BI', description: 'Painéis analíticos em tempo real conectados diretamente ao sistema.', isExpandable: true, submodules: ['Comercial', 'Financeiro', 'Produção'] },
-            { id: 'vendas-pdv', name: 'Vendas & PDV', description: 'Manuais de frente de caixa, pedidos, orçamentos e atendimento comercial.' },
-            { id: 'fiscal-nfe', name: 'Fiscal & NF-e', description: 'Emissão de notas fiscais, devoluções, tributação e obrigações fiscais.' },
-            { id: 'financeiro-erp', name: 'Financeiro ERP', description: 'Contas a pagar, receber, conciliação bancária e boletos.' },
-            { id: 'integracoes', name: 'Integrações', description: 'Conectores com e-commerce, marketplaces, WhatsApp e APIs externas.' }
+        const CHANGELOG = [
+            {
+                version: 'v1.2.0',
+                date: '19/11/2026',
+                isCurrent: true,
+                title: 'Controle de Versão, Roadmap & Módulos Oficiais do ERP',
+                changes: [
+                    { type: 'Novo', text: 'Página de Controle de Versão & Desenvolvimento com Changelog filtrável, Cobertura por Módulo e Roadmap.' },
+                    { type: 'Melhoria', text: 'Reestruturação da barra lateral com Dashboard (Power BI) e os 10 módulos oficiais do ERP.' },
+                    { type: 'Correção', text: 'Remoção de controles administrativos da interface pública e limpeza do HTML/JS para produção.' }
+                ]
+            },
+            {
+                version: 'v1.1.0',
+                date: '18/11/2026',
+                isCurrent: false,
+                title: 'Publicação em Produção & Busca Integrada ao FAQ',
+                changes: [
+                    { type: 'Novo', text: 'Publicação oficial em produção no Netlify (wksistemas.netlify.app).' },
+                    { type: 'Melhoria', text: 'Busca global integrada às Dúvidas Comuns (FAQ) com destaque direto nos cards.' },
+                    { type: 'Melhoria', text: 'Remoção de códigos internos de permissão dos manuais e alternância de tema Claro/Escuro.' }
+                ]
+            },
+            {
+                version: 'v1.0.0',
+                date: '15/11/2026',
+                isCurrent: false,
+                title: 'Lançamento Oficial da Central de Manuais',
+                changes: [
+                    { type: 'Novo', text: 'Lançamento da Central de Manuais Wiki Gestão Web com os 8 manuais completos do Dashboard (Power BI).' },
+                    { type: 'Novo', text: 'Modo de leitura em 4 abas (Passo a Passo com sumário fixo, FAQ pesquisável, Roteiro Prático com checklist salvo no navegador e Visualizador/Download de PDF com fallback via jsPDF).' }
+                ]
+            }
         ];
 
         /**
-         * OS 8 MANUAIS OFICIAIS DO MENU POWER BI (SEM QUALQUER REFERÊNCIA A CÓDIGOS DE PERMISSÃO)
+         * ROADMAP DE DESENVOLVIMENTO (3 COLUNAS)
          */
-        const DEFAULT_MANUALS = [
+        const ROADMAP = [
+            {
+                id: 'em-andamento',
+                title: 'Em Andamento',
+                badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#00E676]/15 dark:text-[#00E676] dark:border-[#00E676]/30',
+                dotClass: 'bg-emerald-500 dark:bg-[#00E676] animate-pulse',
+                items: [
+                    { title: 'Inserção dos prints oficiais nos 8 manuais do Power BI', tag: 'Documentação' },
+                    { title: 'Upload dos arquivos PDF finais na pasta /pdfs/ do Netlify', tag: 'Produção' }
+                ]
+            },
+            {
+                id: 'proximos-passos',
+                title: 'Próximos Passos',
+                badgeClass: 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-500/15 dark:text-sky-400 dark:border-sky-500/30',
+                dotClass: 'bg-sky-500 dark:bg-sky-400',
+                items: [
+                    { title: 'Manuais do módulo Fiscal (NF-e / NFC-e / Devoluções)', tag: 'Fiscal' },
+                    { title: 'Manuais do módulo Comercial (Pedidos e PDV)', tag: 'Comercial' },
+                    { title: 'Manuais do módulo Integração (E-commerce e Marketplaces)', tag: 'Integração' }
+                ]
+            },
+            {
+                id: 'planejado',
+                title: 'Planejado',
+                badgeClass: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/15 dark:text-amber-400 dark:border-amber-500/30',
+                dotClass: 'bg-amber-500 dark:bg-amber-400',
+                items: [
+                    { title: 'Documentação dos módulos Estoque, Financeiro ERP, Compras, Produção, Representação, CRM e Config. Gerais', tag: 'ERP Completo' },
+                    { title: 'Filtro rápido exclusivo para base de FAQ do suporte', tag: 'Suporte' }
+                ]
+            }
+        ];
+
+        /* =========================================================================
+         * COMO ADICIONAR NOVOS MANUAIS / PDFs NOS MÓDULOS DO ERP FUTURAMENTE:
+         * 1. Salve o arquivo .pdf dentro da pasta "./pdfs/" do projeto.
+         * 2. Adicione um novo objeto no final do array MANUALS abaixo, escolhendo
+         *    um dos "areaId" oficiais listados em AREAS:
+         *      'power-bi'      -> Dashboard (Power BI)  (use submodule: 'Comercial' | 'Financeiro' | 'Produção')
+         *      'config-gerais' -> Config. Gerais
+         *      'estoque'       -> Estoque
+         *      'comercial'     -> Comercial
+         *      'integracao'    -> Integração
+         *      'financeiro'    -> Financeiro
+         *      'producao'      -> Produção
+         *      'representacao' -> Representação
+         *      'compras'       -> Compras
+         *      'fiscal'        -> Fiscal
+         *      'crm'           -> CRM
+         *
+         * EXEMPLO DE NOVO MANUAL SIMPLES PARA QUALQUER MÓDULO DO ERP:
+         * {
+         *     num: '09',
+         *     id: 'fiscal-emissao-nfe',
+         *     areaId: 'fiscal',
+         *     submodule: 'Geral',
+         *     title: 'Fiscal – Emissão de NF-e de Saída',
+         *     pdfPath: 'pdfs/09 - Fiscal Emissao NFe - Passo a passo.pdf',
+         *     pdfName: '09 - Fiscal Emissao NFe - Passo a passo.pdf',
+         *     summary: 'Passo a passo completo para emitir, validar e imprimir NF-e de saída.',
+         *     access: 'Menu lateral > Fiscal > Emissão de NF-e',
+         *     simpleSteps: [
+         *         'Acesse o menu Fiscal > Emissão de NF-e.',
+         *         'Informe o cliente, a natureza de operação e os itens.',
+         *         'Clique em Transmitir e aguarde a autorização da SEFAZ.'
+         *     ],
+         *     faq: [
+         *         { q: 'Deu rejeição de NCM, o que fazer?', a: 'Revise o NCM no cadastro do produto em Estoque > Produtos.' }
+         *     ],
+         *     practice: [
+         *         'Emitir uma NF-e em ambiente de homologação.',
+         *         'Baixar o XML e o DANFE em PDF.'
+         *     ]
+         * }
+         * ========================================================================= */
+
+        /**
+         * MÓDULOS OFICIAIS DO PORTAL (DASHBOARD POWER BI + 10 MÓDULOS DO ERP)
+         */
+        const AREAS = [
+            {
+                id: 'power-bi',
+                name: 'Dashboard (Power BI)',
+                description: 'Painéis analíticos em tempo real conectados diretamente ao sistema Gestão Web.',
+                isDashboard: true,
+                submodules: ['Comercial', 'Financeiro', 'Produção']
+            },
+            {
+                id: 'config-gerais',
+                name: 'Config. Gerais',
+                description: 'Parâmetros do sistema, empresas, usuários, perfis e configurações iniciais do ERP.',
+                icon: 'M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+            },
+            {
+                id: 'estoque',
+                name: 'Estoque',
+                description: 'Cadastro de produtos, grades, movimentações, inventário, transferências e saldos.',
+                icon: 'M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'
+            },
+            {
+                id: 'comercial',
+                name: 'Comercial',
+                description: 'Pedidos de venda, orçamentos, tabelas de preço, PDV, expedição e faturamento.',
+                icon: 'M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z'
+            },
+            {
+                id: 'integracao',
+                name: 'Integração',
+                description: 'Conectores com e-commerce, marketplaces, transportadoras e APIs externas.',
+                icon: 'M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244'
+            },
+            {
+                id: 'financeiro',
+                name: 'Financeiro',
+                description: 'Contas a pagar e receber, boletos, conciliação bancária, caixas e planos de contas.',
+                icon: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z'
+            },
+            {
+                id: 'producao',
+                name: 'Produção',
+                description: 'Ordens de produção (OP), ficha técnica, facções, fases, corte e apontamentos.',
+                icon: 'M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085'
+            },
+            {
+                id: 'representacao',
+                name: 'Representação',
+                description: 'Gestão de representantes, comissões, carteiras regionais e pedidos externos.',
+                icon: 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z'
+            },
+            {
+                id: 'compras',
+                name: 'Compras',
+                description: 'Cotações, pedidos de compra, entrada de notas fiscais (XML) e fornecedores.',
+                icon: 'M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+            },
+            {
+                id: 'fiscal',
+                name: 'Fiscal',
+                description: 'Emissão de NF-e, NFC-e, NFS-e, devoluções, tributação, SPED e obrigações fiscais.',
+                icon: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'
+            },
+            {
+                id: 'crm',
+                name: 'CRM',
+                description: 'Funil de vendas, relacionamento com clientes, pós-venda, tarefas e oportunidades.',
+                icon: 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z'
+            }
+        ];
+
+        /**
+         * MANUAIS PUBLICADOS NA CENTRAL
+         * (Os 8 manuais oficiais do módulo Dashboard / Power BI)
+         */
+        const MANUALS = [
             {
                 num: '01',
                 id: 'bi-analise-vendas',
@@ -1196,23 +1294,18 @@
 
         // ================= ESTADO DA APLICAÇÃO =================
         const KEYS = {
-            THEME: 'wiki_gestao_theme_v2',
-            PRACTICE: 'wiki_gestao_practice_v2',
-            CUSTOM_MANUALS: 'wiki_gestao_custom_manuals_v2',
-            CUSTOM_AREAS: 'wiki_gestao_custom_areas_v2'
+            THEME: 'wiki_gestao_theme_v3',
+            PRACTICE: 'wiki_gestao_practice_v3'
         };
 
-        let areas = [];
-        let manuals = [];
         let practiceState = {};
-        let uploadedPdfs = {}; // { [manualId]: { url, fileName } }
-
-        // Navegação: { areaId: 'all' | 'power-bi' | ..., submodule: 'Todos' | 'Comercial' | ... }
+        let activeView = 'catalog'; // 'catalog' | 'reader' | 'version'
         let navState = { areaId: 'power-bi', submodule: 'Todos' };
-        let powerBiExpanded = true;
+        let dashboardExpanded = true;
         let globalSearch = '';
         let currentManualId = null;
         let currentReaderTab = 'guide';
+        let changelogFilter = 'Todas';
 
         const SUBMODULE_BADGE = {
             'Comercial': 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#00E676]/10 dark:text-[#00E676] dark:border-[#00E676]/30',
@@ -1224,7 +1317,7 @@
         // ================= INICIALIZAÇÃO =================
         function initApp() {
             initTheme();
-            loadPersistedData();
+            loadPracticeState();
             setupListeners();
             renderAll();
         }
@@ -1244,34 +1337,12 @@
             try { localStorage.setItem(KEYS.THEME, isDark ? 'dark' : 'light'); } catch (e) {}
         }
 
-        function loadPersistedData() {
-            try {
-                const savedAreas = JSON.parse(localStorage.getItem(KEYS.CUSTOM_AREAS) || '[]');
-                areas = [...DEFAULT_AREAS, ...savedAreas];
-            } catch (e) { areas = [...DEFAULT_AREAS]; }
-
-            try {
-                const savedManuals = JSON.parse(localStorage.getItem(KEYS.CUSTOM_MANUALS) || '[]');
-                manuals = [...DEFAULT_MANUALS, ...savedManuals];
-            } catch (e) { manuals = [...DEFAULT_MANUALS]; }
-
+        function loadPracticeState() {
             try {
                 practiceState = JSON.parse(localStorage.getItem(KEYS.PRACTICE) || '{}');
-            } catch (e) { practiceState = {}; }
-        }
-
-        function saveCustomManuals() {
-            try {
-                const customOnly = manuals.filter(m => m.isCustom);
-                localStorage.setItem(KEYS.CUSTOM_MANUALS, JSON.stringify(customOnly));
-            } catch (e) {}
-        }
-
-        function saveCustomAreas() {
-            try {
-                const customOnly = areas.filter(a => a.isCustom);
-                localStorage.setItem(KEYS.CUSTOM_AREAS, JSON.stringify(customOnly));
-            } catch (e) {}
+            } catch (e) {
+                practiceState = {};
+            }
         }
 
         function savePracticeState() {
@@ -1282,37 +1353,20 @@
             const searchInput = document.getElementById('globalSearchInput');
             const clearBtn = document.getElementById('clearGlobalSearchBtn');
 
-            searchInput.addEventListener('input', (e) => {
-                globalSearch = e.target.value.trim();
-                clearBtn.classList.toggle('hidden', !globalSearch);
-                clearBtn.classList.toggle('flex', !!globalSearch);
-                if (currentManualId) closeManualReader(false);
-                renderCatalog();
-            });
-
-            // Drag & Drop no modal de PDFs
-            const dropZone = document.getElementById('pdfDropZone');
-            ['dragenter', 'dragover'].forEach(evt => {
-                dropZone.addEventListener(evt, (e) => {
-                    e.preventDefault();
-                    dropZone.classList.add('border-emerald-500', 'dark:border-[#00E676]', 'bg-emerald-50/50', 'dark:bg-[#00E676]/5');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    globalSearch = e.target.value.trim();
+                    if (clearBtn) {
+                        clearBtn.classList.toggle('hidden', !globalSearch);
+                        clearBtn.classList.toggle('flex', !!globalSearch);
+                    }
+                    if (currentManualId) closeManualReader(false);
+                    renderCatalog();
                 });
-            });
-            ['dragleave', 'drop'].forEach(evt => {
-                dropZone.addEventListener(evt, (e) => {
-                    e.preventDefault();
-                    dropZone.classList.remove('border-emerald-500', 'dark:border-[#00E676]', 'bg-emerald-50/50', 'dark:bg-[#00E676]/5');
-                });
-            });
-            dropZone.addEventListener('drop', (e) => {
-                if (e.dataTransfer && e.dataTransfer.files) handleBulkPdfFiles(e.dataTransfer.files);
-            });
+            }
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    closePdfManagerModal();
-                    closeNewManualModal();
-                    closeNewAreaModal();
                     closeMobileSidebar();
                 }
             });
@@ -1336,94 +1390,128 @@
             document.getElementById('mobileSidebarBackdrop').classList.add('hidden');
         }
 
-        function togglePowerBiMenu() {
-            powerBiExpanded = !powerBiExpanded;
+        function toggleDashboardMenu() {
+            dashboardExpanded = !dashboardExpanded;
             renderSidebar();
         }
 
         function navigateTo(areaId, submodule = 'Todos') {
+            activeView = 'catalog';
             navState = { areaId, submodule };
-            if (areaId === 'power-bi') powerBiExpanded = true;
+            if (areaId === 'power-bi') dashboardExpanded = true;
             currentManualId = null;
             document.getElementById('readerView').classList.add('hidden');
+            document.getElementById('versionView').classList.add('hidden');
             document.getElementById('catalogView').classList.remove('hidden');
             closeMobileSidebar();
             renderAll();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function openVersionPage() {
+            activeView = 'version';
+            currentManualId = null;
+            document.getElementById('catalogView').classList.add('hidden');
+            document.getElementById('readerView').classList.add('hidden');
+            document.getElementById('versionView').classList.remove('hidden');
+            closeMobileSidebar();
+            renderSidebar();
+            renderBreadcrumb();
+            renderVersionPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function renderSidebar() {
             const container = document.getElementById('sidebarNavContainer');
-            const totalAll = manuals.length;
-            const biManuals = manuals.filter(m => m.areaId === 'power-bi');
+            const totalAll = MANUALS.length;
+            const biManuals = MANUALS.filter(m => m.areaId === 'power-bi');
             const biComercial = biManuals.filter(m => m.submodule === 'Comercial').length;
             const biFinanceiro = biManuals.filter(m => m.submodule === 'Financeiro').length;
             const biProducao = biManuals.filter(m => m.submodule === 'Produção').length;
-            const otherAreas = areas.filter(a => a.id !== 'power-bi');
+            const erpModules = AREAS.filter(a => !a.isDashboard);
 
-            const isAllActive = !currentManualId && navState.areaId === 'all';
-            const isBiActive = !currentManualId && navState.areaId === 'power-bi';
+            const isAllActive = activeView === 'catalog' && navState.areaId === 'all';
+            const isVersionActive = activeView === 'version';
+            const isBiActive = activeView === 'catalog' && navState.areaId === 'power-bi';
 
             container.innerHTML = `
-                <!-- Bloco 1: Visão Geral -->
+                <!-- Bloco 1: Geral -->
                 <div>
                     <div class="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Geral</div>
-                    <button
-                        type="button"
-                        onclick="navigateTo('all')"
-                        class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                            isAllActive
-                                ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-xs'
-                                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1A2330]'
-                        }"
-                    >
-                        <span class="flex items-center gap-2.5 truncate">
-                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
-                            <span class="truncate">Início / Todos os Manuais</span>
-                        </span>
-                        <span class="px-1.5 py-0.5 rounded-md font-mono text-[10px] ${isAllActive ? 'bg-black/15 dark:bg-[#0B0F14]/20' : 'bg-slate-100 dark:bg-[#0B0F14] text-slate-500 dark:text-slate-400'}">${totalAll}</span>
-                    </button>
+                    <div class="space-y-1">
+                        <button
+                            type="button"
+                            onclick="navigateTo('all')"
+                            class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                                isAllActive
+                                    ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-xs'
+                                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1A2330]'
+                            }"
+                        >
+                            <span class="flex items-center gap-2.5 truncate">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                                <span class="truncate">Início / Todos os Manuais</span>
+                            </span>
+                            <span class="px-1.5 py-0.5 rounded-md font-mono text-[10px] ${isAllActive ? 'bg-black/15 dark:bg-[#0B0F14]/20' : 'bg-slate-100 dark:bg-[#0B0F14] text-slate-500 dark:text-slate-400'}">${totalAll}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="openVersionPage()"
+                            class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                                isVersionActive
+                                    ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-xs'
+                                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1A2330]'
+                            }"
+                        >
+                            <span class="flex items-center gap-2.5 truncate">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span class="truncate">Versões &amp; Desenvolvimento</span>
+                            </span>
+                            <span class="px-1.5 py-0.5 rounded-md font-mono text-[10px] ${isVersionActive ? 'bg-black/15 dark:bg-[#0B0F14]/20' : 'bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-700 dark:text-[#00E676]'}">${APP_VERSION.short}</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Bloco 2: Menu Expansível Power BI -->
+                <!-- Bloco 2: Painéis & Indicadores -->
                 <div>
-                    <div class="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Módulos Analíticos</div>
+                    <div class="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Painéis &amp; Indicadores</div>
                     <div class="rounded-xl border ${isBiActive ? 'border-emerald-200 dark:border-[#00E676]/30 bg-emerald-50/40 dark:bg-[#00E676]/5' : 'border-transparent'} p-1 transition-colors">
                         <button
                             type="button"
-                            onclick="togglePowerBiMenu()"
+                            onclick="toggleDashboardMenu()"
                             class="w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-xs font-extrabold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-[#1A2330] transition-colors"
                         >
-                            <span class="flex items-center gap-2.5">
-                                <svg class="w-4 h-4 text-emerald-600 dark:text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <span class="flex items-center gap-2.5 truncate">
+                                <svg class="w-4 h-4 shrink-0 text-emerald-600 dark:text-[#00E676]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                                 </svg>
-                                <span>Power BI</span>
+                                <span class="truncate">Dashboard (Power BI)</span>
                             </span>
-                            <span class="flex items-center gap-1.5">
+                            <span class="flex items-center gap-1.5 shrink-0">
                                 <span class="px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold bg-emerald-100 dark:bg-[#00E676]/20 text-emerald-700 dark:text-[#00E676]">${biManuals.length}</span>
-                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform ${powerBiExpanded ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform ${dashboardExpanded ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
                             </span>
                         </button>
 
-                        ${powerBiExpanded ? `
+                        ${dashboardExpanded ? `
                             <div class="mt-1 pl-3 pr-1 pb-1 space-y-0.5 border-l-2 border-slate-200 dark:border-[#243040] ml-4">
-                                ${renderBiSubItem('Todos do Power BI', 'Todos', biManuals.length)}
-                                ${renderBiSubItem('Comercial', 'Comercial', biComercial)}
-                                ${renderBiSubItem('Financeiro', 'Financeiro', biFinanceiro)}
-                                ${renderBiSubItem('Produção', 'Produção', biProducao)}
+                                ${renderDashboardSubItem('Todos do Dashboard', 'Todos', biManuals.length)}
+                                ${renderDashboardSubItem('Comercial', 'Comercial', biComercial)}
+                                ${renderDashboardSubItem('Financeiro', 'Financeiro', biFinanceiro)}
+                                ${renderDashboardSubItem('Produção', 'Produção', biProducao)}
                             </div>
                         ` : ''}
                     </div>
                 </div>
 
-                <!-- Bloco 3: Outras Áreas (Prontas para novos PDFs) -->
+                <!-- Bloco 3: Módulos do ERP -->
                 <div>
-                    <div class="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Outras Áreas</div>
+                    <div class="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Módulos do ERP</div>
                     <div class="space-y-1">
-                        ${otherAreas.map(area => {
-                            const count = manuals.filter(m => m.areaId === area.id).length;
-                            const isActive = !currentManualId && navState.areaId === area.id;
+                        ${erpModules.map(area => {
+                            const count = MANUALS.filter(m => m.areaId === area.id).length;
+                            const isActive = activeView === 'catalog' && navState.areaId === area.id;
                             return `
                                 <button
                                     type="button"
@@ -1435,7 +1523,9 @@
                                     }"
                                 >
                                     <span class="flex items-center gap-2.5 truncate">
-                                        <svg class="w-4 h-4 shrink-0 opacity-75" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"/></svg>
+                                        <svg class="w-4 h-4 shrink-0 ${isActive ? 'opacity-100' : 'opacity-75'}" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="${area.icon}" />
+                                        </svg>
                                         <span class="truncate">${escapeHtml(area.name)}</span>
                                     </span>
                                     <span class="px-1.5 py-0.5 rounded-md font-mono text-[10px] ${
@@ -1453,8 +1543,8 @@
             `;
         }
 
-        function renderBiSubItem(label, subKey, count) {
-            const active = !currentManualId && navState.areaId === 'power-bi' && navState.submodule === subKey;
+        function renderDashboardSubItem(label, subKey, count) {
+            const active = activeView === 'catalog' && navState.areaId === 'power-bi' && navState.submodule === subKey;
             return `
                 <button
                     type="button"
@@ -1475,10 +1565,13 @@
             const el = document.getElementById('headerBreadcrumb');
             const parts = [`<button type="button" onclick="navigateTo('all')" class="hover:text-emerald-600 dark:hover:text-[#00E676] transition-colors">Central de Manuais</button>`];
 
-            if (currentManualId) {
-                const m = manuals.find(x => x.id === currentManualId);
+            if (activeView === 'version') {
+                parts.push(`<span class="opacity-40">›</span>`);
+                parts.push(`<span class="text-slate-900 dark:text-white font-bold truncate">Versões &amp; Desenvolvimento</span>`);
+            } else if (currentManualId) {
+                const m = MANUALS.find(x => x.id === currentManualId);
                 if (m) {
-                    const area = areas.find(a => a.id === m.areaId);
+                    const area = AREAS.find(a => a.id === m.areaId);
                     if (area) {
                         parts.push(`<span class="opacity-40">›</span>`);
                         parts.push(`<button type="button" onclick="navigateTo('${area.id}')" class="hover:text-emerald-600 dark:hover:text-[#00E676]">${escapeHtml(area.name)}</button>`);
@@ -1494,7 +1587,7 @@
                 parts.push(`<span class="opacity-40">›</span>`);
                 parts.push(`<span class="text-slate-900 dark:text-white font-bold">Todos os Manuais</span>`);
             } else {
-                const area = areas.find(a => a.id === navState.areaId);
+                const area = AREAS.find(a => a.id === navState.areaId);
                 if (area) {
                     parts.push(`<span class="opacity-40">›</span>`);
                     if (navState.submodule && navState.submodule !== 'Todos') {
@@ -1508,6 +1601,180 @@
             }
 
             el.innerHTML = parts.join(' ');
+        }
+
+        // ================= PÁGINA: CONTROLE DE VERSÃO & DESENVOLVIMENTO =================
+        function renderVersionPage() {
+            const totalRoadmapItems = ROADMAP.reduce((acc, col) => acc + col.items.length, 0);
+            document.getElementById('verStatCurrent').textContent = APP_VERSION.current;
+            document.getElementById('verStatDate').textContent = APP_VERSION.date;
+            document.getElementById('verStatManuals').textContent = MANUALS.length;
+            document.getElementById('verStatModules').textContent = AREAS.length;
+            document.getElementById('verStatRoadmap').textContent = totalRoadmapItems;
+
+            renderModuleCoverage();
+            renderChangelog();
+            renderRoadmap();
+        }
+
+        function renderModuleCoverage() {
+            const grid = document.getElementById('moduleCoverageGrid');
+            const badge = document.getElementById('coverageSummaryBadge');
+
+            const coveredModules = AREAS.filter(a => MANUALS.some(m => m.areaId === a.id)).length;
+            badge.textContent = `${coveredModules} de ${AREAS.length} módulos com manuais`;
+
+            grid.innerHTML = AREAS.map(area => {
+                const count = MANUALS.filter(m => m.areaId === area.id).length;
+                let statusLabel = 'Em breve';
+                let statusClass = 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-[#0B0F14] dark:text-slate-400 dark:border-[#243040]';
+                let pct = 0;
+
+                if (area.isDashboard && count >= 8) {
+                    statusLabel = 'Concluído';
+                    statusClass = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#00E676]/15 dark:text-[#00E676] dark:border-[#00E676]/30';
+                    pct = 100;
+                } else if (count > 0) {
+                    statusLabel = 'Em andamento';
+                    statusClass = 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-500/15 dark:text-sky-400 dark:border-sky-500/30';
+                    pct = Math.min(90, count * 25);
+                }
+
+                const iconPath = area.icon || 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z';
+
+                return `
+                    <button
+                        type="button"
+                        onclick="navigateTo('${area.id}')"
+                        class="text-left p-4 rounded-xl bg-slate-50 hover:bg-slate-100/80 dark:bg-[#1A2330] dark:hover:bg-[#202B3A] border border-slate-200 dark:border-[#243040] hover:border-emerald-400 dark:hover:border-[#00E676]/50 transition-all group"
+                    >
+                        <div class="flex items-start justify-between gap-2 mb-3">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg ${count > 0 ? 'bg-emerald-100 dark:bg-[#00E676]/15 text-emerald-600 dark:text-[#00E676]' : 'bg-slate-200/80 dark:bg-[#0B0F14] text-slate-500 dark:text-slate-400'} flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="${iconPath}" />
+                                    </svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#00E676] transition-colors truncate">${escapeHtml(area.name)}</div>
+                                    <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400">${count} ${count === 1 ? 'manual' : 'manuais'}</div>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-1.5 rounded-full bg-slate-200 dark:bg-[#0B0F14] overflow-hidden">
+                                <div class="h-full rounded-full ${pct === 100 ? 'bg-emerald-500 dark:bg-[#00E676]' : 'bg-sky-500 dark:bg-sky-400'} transition-all" style="width: ${pct}%"></div>
+                            </div>
+                            <span class="font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 w-8 text-right">${pct}%</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function setChangelogFilter(tag) {
+            changelogFilter = tag;
+            renderChangelog();
+        }
+
+        function renderChangelog() {
+            const pills = document.getElementById('changelogFilterPills');
+            const timeline = document.getElementById('changelogTimeline');
+            const tags = ['Todas', 'Novo', 'Melhoria', 'Correção'];
+
+            pills.innerHTML = tags.map(tag => {
+                const active = changelogFilter === tag;
+                return `
+                    <button
+                        type="button"
+                        onclick="setChangelogFilter('${tag}')"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                            active
+                                ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] shadow-xs'
+                                : 'bg-slate-100 dark:bg-[#1A2330] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#243040]'
+                        }"
+                    >${tag}</button>
+                `;
+            }).join('');
+
+            const tagStyles = {
+                'Novo': 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#00E676]/15 dark:text-[#00E676] dark:border-[#00E676]/30',
+                'Melhoria': 'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-500/15 dark:text-sky-400 dark:border-sky-500/30',
+                'Correção': 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/15 dark:text-amber-400 dark:border-amber-500/30'
+            };
+
+            const filteredReleases = CHANGELOG
+                .map(rel => ({
+                    ...rel,
+                    changes: changelogFilter === 'Todas'
+                        ? rel.changes
+                        : rel.changes.filter(c => c.type === changelogFilter)
+                }))
+                .filter(rel => rel.changes.length > 0);
+
+            if (filteredReleases.length === 0) {
+                timeline.innerHTML = `<p class="text-sm text-slate-500 dark:text-slate-400 py-4">Nenhuma alteração registrada com a tag "${escapeHtml(changelogFilter)}".</p>`;
+                return;
+            }
+
+            timeline.innerHTML = filteredReleases.map(rel => `
+                <article class="relative">
+                    <span class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[#141B24] ${
+                        rel.isCurrent ? 'bg-emerald-500 dark:bg-[#00E676] ring-4 ring-emerald-500/20 dark:ring-[#00E676]/20' : 'bg-slate-400 dark:bg-slate-500'
+                    }"></span>
+
+                    <div class="p-4 sm:p-5 rounded-xl bg-slate-50 dark:bg-[#1A2330] border ${
+                        rel.isCurrent ? 'border-emerald-300 dark:border-[#00E676]/40' : 'border-slate-200 dark:border-[#243040]'
+                    }">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-mono text-xs sm:text-sm font-extrabold px-2.5 py-0.5 rounded-lg bg-slate-900 text-white dark:bg-[#0B0F14] dark:text-[#00E676] border border-slate-800 dark:border-[#00E676]/30">${escapeHtml(rel.version)}</span>
+                                ${rel.isCurrent ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14]">Atual</span>` : ''}
+                                <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">${escapeHtml(rel.title)}</h3>
+                            </div>
+                            <span class="font-mono text-xs text-slate-500 dark:text-slate-400">${escapeHtml(rel.date)}</span>
+                        </div>
+
+                        <ul class="space-y-2 mt-3">
+                            ${rel.changes.map(ch => `
+                                <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                                    <span class="mt-0.5 px-2 py-0.5 rounded-md text-[10px] font-bold border shrink-0 ${tagStyles[ch.type] || tagStyles['Melhoria']}">${escapeHtml(ch.type)}</span>
+                                    <span>${escapeHtml(ch.text)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderRoadmap() {
+            const grid = document.getElementById('roadmapGrid');
+            grid.innerHTML = ROADMAP.map(col => `
+                <div class="rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040] p-4 flex flex-col">
+                    <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200 dark:border-[#243040]">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full ${col.dotClass}"></span>
+                            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(col.title)}</h3>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${col.badgeClass}">${col.items.length}</span>
+                    </div>
+
+                    <ul class="space-y-2.5 flex-1">
+                        ${col.items.map(item => `
+                            <li class="p-3 rounded-xl bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040]">
+                                <div class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 leading-snug mb-2">
+                                    ${escapeHtml(item.title)}
+                                </div>
+                                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-[#0B0F14] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-[#243040]">
+                                    ${escapeHtml(item.tag)}
+                                </span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
         }
 
         // ================= CATÁLOGO & BUSCA INTELIGENTE =================
@@ -1542,7 +1809,7 @@
         }
 
         function renderCatalog() {
-            const area = areas.find(a => a.id === navState.areaId);
+            const area = AREAS.find(a => a.id === navState.areaId);
             const heroBadge = document.getElementById('areaHeroBadge');
             const heroTitle = document.getElementById('areaHeroTitle');
             const heroDesc = document.getElementById('areaHeroDesc');
@@ -1559,11 +1826,11 @@
                 heroDesc.textContent = 'Consulte manuais passo a passo, dúvidas comuns de clientes, roteiros práticos e baixe em PDF.';
                 subPills.innerHTML = '';
             } else if (area) {
-                heroBadge.textContent = `Menu ${area.name}`;
+                heroBadge.textContent = area.isDashboard ? 'Painéis & Indicadores' : 'Módulo do ERP';
                 heroTitle.textContent = navState.submodule !== 'Todos' ? `${area.name} — ${navState.submodule}` : area.name;
-                heroDesc.textContent = area.description || `Manuais e PDFs da área ${area.name}.`;
+                heroDesc.textContent = area.description || `Manuais passo a passo do módulo ${area.name}.`;
 
-                if (area.id === 'power-bi') {
+                if (area.isDashboard) {
                     const subs = ['Todos', 'Comercial', 'Financeiro', 'Produção'];
                     subPills.innerHTML = subs.map(s => {
                         const isAct = navState.submodule === s;
@@ -1572,7 +1839,7 @@
                                 isAct
                                     ? 'bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14]'
                                     : 'bg-white dark:bg-[#141B24] border border-slate-200 dark:border-[#243040] text-slate-600 dark:text-slate-300 hover:border-emerald-400 dark:hover:border-[#00E676]/50'
-                            }">${s === 'Todos' ? 'Todos do Power BI' : s}</button>
+                            }">${s === 'Todos' ? 'Todos do Dashboard' : s}</button>
                         `;
                     }).join('');
                 } else {
@@ -1581,9 +1848,9 @@
             }
 
             const queryNorm = normalizeText(globalSearch);
-            const filtered = manuals
+            const filtered = MANUALS
                 .filter(m => {
-                    if (queryNorm) return true; // Busca global varre todas as áreas
+                    if (queryNorm) return true;
                     if (navState.areaId === 'all') return true;
                     if (m.areaId !== navState.areaId) return false;
                     if (navState.areaId === 'power-bi' && navState.submodule !== 'Todos') {
@@ -1615,21 +1882,21 @@
                         <button type="button" onclick="clearGlobalSearch()" class="px-4 py-2 rounded-xl bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] text-xs font-extrabold">Limpar Busca</button>
                     `;
                 } else {
-                    const areaName = area ? area.name : 'esta área';
+                    const areaName = area ? area.name : 'selecionado';
                     emptyBox.innerHTML = `
                         <div class="w-14 h-14 mx-auto mb-3.5 rounded-2xl bg-emerald-50 dark:bg-[#00E676]/10 border border-emerald-200 dark:border-[#00E676]/30 text-emerald-600 dark:text-[#00E676] flex items-center justify-center">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
                         </div>
-                        <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mb-1">Área "${escapeHtml(areaName)}" pronta para novos manuais</h3>
+                        <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mb-1.5">Os manuais do módulo ${escapeHtml(areaName)} serão publicados em breve</h3>
                         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-5">
-                            Ainda não há PDFs ou guias cadastrados aqui. Adicione um novo manual passo a passo ou faça upload de um PDF agora mesmo.
+                            Nossa equipe está preparando os guias passo a passo e arquivos em PDF deste módulo. Enquanto isso, você pode consultar os manuais já disponíveis.
                         </p>
                         <div class="flex flex-wrap items-center justify-center gap-2.5">
-                            <button type="button" onclick="openNewManualModal('${navState.areaId}')" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold shadow-xs">
-                                + Adicionar Manual / PDF nesta área
+                            <button type="button" onclick="navigateTo('power-bi')" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold shadow-xs transition-all">
+                                Ver manuais do Dashboard (Power BI)
                             </button>
-                            <button type="button" onclick="openPdfManagerModal('${navState.areaId}')" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-slate-700 dark:text-slate-200 text-xs font-bold">
-                                Subir Arquivo PDF
+                            <button type="button" onclick="navigateTo('all')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1A2330] dark:hover:bg-[#243040] border border-slate-200 dark:border-[#243040] text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors">
+                                Ver todos os manuais
                             </button>
                         </div>
                     `;
@@ -1641,10 +1908,9 @@
             grid.classList.remove('hidden');
 
             grid.innerHTML = filtered.map(({ manual: m, faqMatches }) => {
-                const areaObj = areas.find(a => a.id === m.areaId);
+                const areaObj = AREAS.find(a => a.id === m.areaId);
                 const subLabel = m.submodule && m.submodule !== 'Geral' ? m.submodule : (areaObj ? areaObj.name : 'Manual');
                 const subStyle = SUBMODULE_BADGE[m.submodule] || SUBMODULE_BADGE['Geral'];
-                const hasPdf = !!uploadedPdfs[m.id];
 
                 const practiceList = m.practice || [];
                 const doneCount = (practiceState[m.id] || []).length;
@@ -1658,12 +1924,8 @@
                                     <span class="font-mono text-xs font-extrabold px-2 py-0.5 rounded-lg bg-slate-900 text-white dark:bg-[#0B0F14] dark:text-[#00E676] border border-slate-800 dark:border-[#00E676]/30">${escapeHtml(m.num)}</span>
                                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${subStyle}">${escapeHtml(subLabel)}</span>
                                 </div>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md ${
-                                    hasPdf
-                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-[#00E676]/15 dark:text-[#00E676]'
-                                        : 'bg-slate-100 text-slate-500 dark:bg-[#1A2330] dark:text-slate-400'
-                                }">
-                                    ${hasPdf ? 'PDF Local Carregado' : 'PDF Gerado sob demanda'}
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 dark:bg-[#1A2330] dark:text-slate-400">
+                                    Leitura + PDF
                                 </span>
                             </div>
 
@@ -1721,9 +1983,9 @@
         }
 
         function updateStats() {
-            document.getElementById('statTotalManuals').textContent = manuals.length;
+            document.getElementById('statTotalManuals').textContent = MANUALS.length;
             let total = 0, done = 0;
-            manuals.forEach(m => {
+            MANUALS.forEach(m => {
                 const list = m.practice || [];
                 total += list.length;
                 done += (practiceState[m.id] || []).length;
@@ -1734,14 +1996,16 @@
 
         // ================= TELA DE LEITURA =================
         function openManual(manualId, initialTab = 'guide', faqSearchPrefill = '') {
-            const m = manuals.find(x => x.id === manualId);
+            const m = MANUALS.find(x => x.id === manualId);
             if (!m) return;
 
+            activeView = 'reader';
             currentManualId = manualId;
             document.getElementById('catalogView').classList.add('hidden');
+            document.getElementById('versionView').classList.add('hidden');
             document.getElementById('readerView').classList.remove('hidden');
 
-            const area = areas.find(a => a.id === m.areaId);
+            const area = AREAS.find(a => a.id === m.areaId);
             document.getElementById('backToMenuLabel').textContent = `Voltar para ${area ? area.name : 'Catálogo'}`;
             document.getElementById('readerNumBadge').textContent = m.num;
 
@@ -1776,8 +2040,10 @@
         }
 
         function closeManualReader(scrollTop = true) {
+            activeView = 'catalog';
             currentManualId = null;
             document.getElementById('readerView').classList.add('hidden');
+            document.getElementById('versionView').classList.add('hidden');
             document.getElementById('catalogView').classList.remove('hidden');
             renderAll();
             if (scrollTop) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1805,8 +2071,8 @@
             const toc = document.getElementById('readerTocNav');
             const body = document.getElementById('guideSectionsContainer');
 
-            // Manuais customizados simples (criados pelo usuário)
-            if (m.isCustom) {
+            // Manuais simples de módulos do ERP (sem estrutura de cards/gráficos de B.I.)
+            if (!m.filters && !m.cards && !m.charts) {
                 const sections = [
                     { id: 'sec-resumo', label: '1. Visão Geral' },
                     ...(m.access ? [{ id: 'sec-acesso', label: '2. Como Acessar' }] : []),
@@ -1836,13 +2102,13 @@
                                     </li>
                                 `).join('')}
                             </ol>
-                        ` : `<p class="text-sm text-slate-500 dark:text-slate-400">Este manual foi publicado com foco no arquivo PDF. Acesse a aba <strong>Visualizar PDF</strong> ou clique em <strong>Baixar PDF</strong>.</p>`}
+                        ` : `<p class="text-sm text-slate-500 dark:text-slate-400">Consulte o documento completo na aba <strong>Visualizar PDF</strong> ou clique em <strong>Baixar PDF</strong>.</p>`}
                     </section>
                 `;
                 return;
             }
 
-            // Manuais completos do Power BI
+            // Manuais completos do Dashboard (Power BI)
             const sections = [
                 { id: 'sec-serve', label: '1. Para que serve' },
                 { id: 'sec-acesso', label: '2. Como acessar' },
@@ -2021,7 +2287,7 @@
 
         // ================= ABA 2: FAQ =================
         function renderFaqList() {
-            const m = manuals.find(x => x.id === currentManualId);
+            const m = MANUALS.find(x => x.id === currentManualId);
             if (!m) return;
 
             const q = normalizeText(document.getElementById('faqLocalSearch').value);
@@ -2050,7 +2316,7 @@
 
         // ================= ABA 3: ROTEIRO PRÁTICO =================
         function renderPracticeTab() {
-            const m = manuals.find(x => x.id === currentManualId);
+            const m = MANUALS.find(x => x.id === currentManualId);
             if (!m) return;
 
             const list = m.practice || [];
@@ -2108,15 +2374,9 @@
         // ================= ABA 4: VISUALIZAR PDF =================
         async function renderPdfViewerTab(m) {
             const wrapper = document.getElementById('pdfViewerWrapper');
-            const localPdf = uploadedPdfs[m.id];
-
-            if (localPdf) {
-                wrapper.innerHTML = buildPdfIframeHtml(m, localPdf.url, localPdf.fileName, 'PDF Local Carregado');
-                return;
-            }
 
             if (m.pdfPath && await checkStaticPdfExists(m.pdfPath)) {
-                wrapper.innerHTML = buildPdfIframeHtml(m, m.pdfPath, m.pdfName, 'PDF Oficial (./pdfs/)');
+                wrapper.innerHTML = buildPdfIframeHtml(m, m.pdfPath, m.pdfName);
                 return;
             }
 
@@ -2125,279 +2385,41 @@
                     <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-emerald-600 dark:text-[#00E676] flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                     </div>
-                    <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2">PDF Oficial ainda não anexado</h3>
+                    <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mb-2">PDF oficial ainda não publicado no servidor</h3>
                     <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-6">
-                        Suba o arquivo <code class="font-mono">.pdf</code> deste manual para visualizá-lo aqui embutido, ou gere automaticamente um PDF formatado com o conteúdo completo.
+                        Enquanto o arquivo ilustrado não é adicionado em <code class="font-mono text-emerald-600 dark:text-[#00E676]">${escapeHtml(m.pdfPath || 'pdfs/')}</code>, você pode gerar e baixar agora mesmo um PDF completo com todo o passo a passo deste manual.
                     </p>
-                    <div class="flex flex-wrap items-center justify-center gap-3">
-                        <label class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1A2330] dark:hover:bg-[#243040] border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-800 dark:text-white cursor-pointer transition-colors">
-                            Subir PDF deste Manual
-                            <input type="file" accept="application/pdf,.pdf" class="hidden" onchange="handleSinglePdfFile('${m.id}', this.files[0])">
-                        </label>
-                        <button type="button" onclick="generateFallbackPdf('${m.id}')" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold transition-all">
-                            Gerar PDF via jsPDF
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onclick="generateFallbackPdf('${m.id}')"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs sm:text-sm font-extrabold shadow-xs transition-all active:scale-95"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                        Gerar e Baixar PDF (jsPDF)
+                    </button>
                 </div>
             `;
         }
 
-        function buildPdfIframeHtml(m, url, fileName, badge) {
+        function buildPdfIframeHtml(m, url, fileName) {
             return `
                 <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div>
                         <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-[#00E676]">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-[#00E676]"></span>
-                            ${escapeHtml(badge)}
+                            PDF Oficial Disponível
                         </span>
                         <div class="text-xs font-mono text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(fileName)}</div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <a href="${url}" download="${escapeHtml(fileName)}" class="px-4 py-2 rounded-xl bg-emerald-600 dark:bg-[#00E676] text-white dark:text-[#0B0F14] text-xs font-extrabold">Baixar PDF</a>
-                        <a href="${url}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-700 dark:text-slate-200">Abrir em Nova Aba</a>
+                        <a href="${url}" download="${escapeHtml(fileName)}" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-[#00E676] dark:hover:bg-[#00C853] text-white dark:text-[#0B0F14] text-xs font-extrabold transition-colors">Baixar PDF</a>
+                        <a href="${url}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#1A2330] dark:hover:bg-[#243040] border border-slate-200 dark:border-[#243040] text-xs font-bold text-slate-700 dark:text-slate-200 transition-colors">Abrir em Nova Aba</a>
                     </div>
                 </div>
                 <div class="w-full h-[70vh] rounded-xl overflow-hidden border border-slate-200 dark:border-[#243040] bg-slate-900">
                     <iframe src="${url}" class="w-full h-full" title="PDF ${escapeHtml(m.title)}"></iframe>
                 </div>
             `;
-        }
-
-        // ================= MODAIS: PDF MANAGER, NOVO MANUAL, NOVA ÁREA =================
-        function populateAreaSelect(selectId, preselectAreaId = null) {
-            const sel = document.getElementById(selectId);
-            sel.innerHTML = areas.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('');
-            if (preselectAreaId && areas.some(a => a.id === preselectAreaId)) {
-                sel.value = preselectAreaId;
-            }
-        }
-
-        function openPdfManagerModal(preselectAreaId = null) {
-            populateAreaSelect('quickPdfAreaSelect', preselectAreaId || (navState.areaId !== 'all' ? navState.areaId : 'power-bi'));
-            renderPdfManagerList();
-            document.getElementById('pdfManagerModal').classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-        }
-
-        function closePdfManagerModal() {
-            document.getElementById('pdfManagerModal').classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        function renderPdfManagerList() {
-            const list = document.getElementById('pdfManagerList');
-            list.innerHTML = manuals.map(m => {
-                const linked = uploadedPdfs[m.id];
-                const area = areas.find(a => a.id === m.areaId);
-                return `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#1A2330] border border-slate-200 dark:border-[#243040]">
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-2">
-                                <span class="font-mono text-xs font-bold text-emerald-600 dark:text-[#00E676]">${escapeHtml(m.num)}</span>
-                                <span class="text-xs font-bold text-slate-900 dark:text-white truncate">${escapeHtml(m.title)}</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#0B0F14] text-slate-600 dark:text-slate-400">${escapeHtml(area ? area.name : '')}</span>
-                            </div>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">
-                                ${linked ? `Carregado: ${escapeHtml(linked.fileName)}` : `Arquivo esperado: ${escapeHtml(m.pdfName)}`}
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            ${linked ? `<button type="button" onclick="removeLinkedPdf('${m.id}')" class="px-2 py-1 rounded-lg text-xs font-semibold text-rose-500 hover:bg-rose-500/10">Remover</button>` : ''}
-                            <label class="px-3 py-1.5 rounded-lg bg-white dark:bg-[#141B24] border border-slate-300 dark:border-[#243040] hover:border-emerald-500 dark:hover:border-[#00E676] text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer">
-                                ${linked ? 'Trocar PDF' : 'Vincular PDF'}
-                                <input type="file" accept="application/pdf,.pdf" class="hidden" onchange="handleSinglePdfFile('${m.id}', this.files[0])">
-                            </label>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function handleQuickPdfManualSubmit(e) {
-            e.preventDefault();
-            const areaId = document.getElementById('quickPdfAreaSelect').value;
-            const file = document.getElementById('quickPdfFileInput').files[0];
-            const title = document.getElementById('quickPdfTitle').value.trim();
-            const summary = document.getElementById('quickPdfSummary').value.trim();
-            if (!file || !title) return;
-
-            const nextNum = String(manuals.length + 1).padStart(2, '0');
-            const newId = 'custom-' + Date.now();
-            const newManual = {
-                num: nextNum,
-                id: newId,
-                areaId,
-                submodule: areaId === 'power-bi' ? 'Comercial' : 'Geral',
-                title,
-                pdfPath: '',
-                pdfName: file.name,
-                summary,
-                access: '',
-                simpleSteps: [],
-                faq: [],
-                practice: [],
-                isCustom: true
-            };
-
-            manuals.push(newManual);
-            saveCustomManuals();
-            linkPdfToManual(newId, file);
-
-            document.getElementById('quickPdfManualForm').reset();
-            refreshAfterPdfChange();
-            closePdfManagerModal();
-            navigateTo(areaId);
-            showToast(`PDF "${title}" publicado com sucesso!`);
-        }
-
-        function handleSinglePdfFile(manualId, file) {
-            if (!file) return;
-            linkPdfToManual(manualId, file);
-            renderPdfManagerList();
-            refreshAfterPdfChange();
-            showToast(`PDF vinculado: ${file.name}`);
-        }
-
-        function handleBulkPdfFiles(fileList) {
-            if (!fileList || !fileList.length) return;
-            let matched = 0;
-            Array.from(fileList).forEach(file => {
-                if (!file.name.toLowerCase().endsWith('.pdf')) return;
-                const norm = normalizeText(file.name);
-                let target = manuals.find(m => new RegExp(`(^|\\D)${m.num}(\\D|$)`).test(file.name));
-                if (!target) {
-                    target = manuals.find(m => {
-                        const words = normalizeText(m.title).split(/\s+/).filter(w => w.length > 3 && w !== 'analise');
-                        return words.some(w => norm.includes(w));
-                    });
-                }
-                if (target) {
-                    linkPdfToManual(target.id, file);
-                    matched++;
-                }
-            });
-            document.getElementById('bulkPdfInput').value = '';
-            renderPdfManagerList();
-            refreshAfterPdfChange();
-            if (matched > 0) showToast(`${matched} PDF(s) vinculado(s) automaticamente!`);
-            else showToast('Nenhum prefixo 01-08 reconhecido. Vincule manualmente na lista abaixo.', 'error');
-        }
-
-        function linkPdfToManual(manualId, file) {
-            if (uploadedPdfs[manualId] && uploadedPdfs[manualId].url) URL.revokeObjectURL(uploadedPdfs[manualId].url);
-            uploadedPdfs[manualId] = { url: URL.createObjectURL(file), fileName: file.name };
-        }
-
-        function removeLinkedPdf(manualId) {
-            if (uploadedPdfs[manualId] && uploadedPdfs[manualId].url) URL.revokeObjectURL(uploadedPdfs[manualId].url);
-            delete uploadedPdfs[manualId];
-            renderPdfManagerList();
-            refreshAfterPdfChange();
-            showToast('Vínculo de PDF removido.');
-        }
-
-        function refreshAfterPdfChange() {
-            const count = Object.keys(uploadedPdfs).length;
-            const badge = document.getElementById('uploadedPdfCounterBadge');
-            badge.textContent = count;
-            badge.classList.toggle('hidden', count === 0);
-
-            renderAll();
-            if (currentManualId) {
-                const m = manuals.find(x => x.id === currentManualId);
-                if (m) renderPdfViewerTab(m);
-            }
-        }
-
-        // Modal + Novo Manual
-        function openNewManualModal(preselectAreaId = null) {
-            populateAreaSelect('nmArea', preselectAreaId || (navState.areaId !== 'all' ? navState.areaId : 'power-bi'));
-            toggleSubmoduleField();
-            document.getElementById('newManualModal').classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-        }
-
-        function closeNewManualModal() {
-            document.getElementById('newManualModal').classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        function toggleSubmoduleField() {
-            const isBi = document.getElementById('nmArea').value === 'power-bi';
-            document.getElementById('nmSubmoduleWrapper').classList.toggle('hidden', !isBi);
-        }
-
-        function handleNewManualSubmit(e) {
-            e.preventDefault();
-            const areaId = document.getElementById('nmArea').value;
-            const submodule = areaId === 'power-bi' ? document.getElementById('nmSubmodule').value : 'Geral';
-            const title = document.getElementById('nmTitle').value.trim();
-            const summary = document.getElementById('nmSummary').value.trim();
-            const access = document.getElementById('nmAccess').value.trim();
-            const pdfFile = document.getElementById('nmPdfFile').files[0];
-
-            const simpleSteps = document.getElementById('nmSteps').value
-                .split('\n').map(s => s.replace(/^\d+[\.\)\-]\s*/, '').trim()).filter(Boolean);
-
-            const faq = document.getElementById('nmFaq').value
-                .split('\n').map(line => {
-                    const parts = line.split('|');
-                    if (parts.length >= 2) return { q: parts[0].trim(), a: parts.slice(1).join('|').trim() };
-                    return null;
-                }).filter(Boolean);
-
-            const nextNum = String(manuals.length + 1).padStart(2, '0');
-            const newId = 'custom-' + Date.now();
-            const slug = normalizeText(title).replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
-            const newManual = {
-                num: nextNum,
-                id: newId,
-                areaId,
-                submodule,
-                title,
-                pdfPath: '',
-                pdfName: pdfFile ? pdfFile.name : `${nextNum} - ${slug || 'manual'}.pdf`,
-                summary,
-                access,
-                simpleSteps,
-                faq,
-                practice: simpleSteps.length > 0 ? [...simpleSteps] : [],
-                isCustom: true
-            };
-
-            manuals.push(newManual);
-            saveCustomManuals();
-            if (pdfFile) linkPdfToManual(newId, pdfFile);
-
-            document.getElementById('newManualForm').reset();
-            refreshAfterPdfChange();
-            closeNewManualModal();
-            navigateTo(areaId, areaId === 'power-bi' ? submodule : 'Todos');
-            showToast(`Manual "${title}" salvo com sucesso!`);
-        }
-
-        // Modal + Nova Área
-        function openNewAreaModal() {
-            document.getElementById('newAreaNameInput').value = '';
-            document.getElementById('newAreaModal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('newAreaNameInput').focus(), 60);
-        }
-
-        function closeNewAreaModal() {
-            document.getElementById('newAreaModal').classList.add('hidden');
-        }
-
-        function handleNewAreaSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('newAreaNameInput').value.trim();
-            if (!name) return;
-            const id = 'area-' + normalizeText(name).replace(/[^a-z0-9]+/g, '-') + '-' + Date.now().toString().slice(-3);
-            areas.push({ id, name, description: `Manuais passo a passo e PDFs da área ${name}.`, isCustom: true });
-            saveCustomAreas();
-            closeNewAreaModal();
-            navigateTo(id);
-            showToast(`Área "${name}" criada na barra lateral!`);
         }
 
         // ================= DOWNLOAD DE PDF REAL & FALLBACK jsPDF =================
@@ -2410,14 +2432,8 @@
         }
 
         async function smartDownloadPdf(manualId) {
-            const m = manuals.find(x => x.id === manualId);
+            const m = MANUALS.find(x => x.id === manualId);
             if (!m) return;
-
-            if (uploadedPdfs[m.id]) {
-                triggerDownload(uploadedPdfs[m.id].url, uploadedPdfs[m.id].fileName);
-                showToast(`Baixando PDF: ${uploadedPdfs[m.id].fileName}`);
-                return;
-            }
 
             if (m.pdfPath && await checkStaticPdfExists(m.pdfPath)) {
                 triggerDownload(m.pdfPath, m.pdfName);
@@ -2438,7 +2454,7 @@
         }
 
         function generateFallbackPdf(manualId) {
-            const m = manuals.find(x => x.id === manualId);
+            const m = MANUALS.find(x => x.id === manualId);
             if (!m) return;
 
             try {
@@ -2456,7 +2472,7 @@
                 const bottomLimit = pageH - 20;
                 let y = 0;
 
-                const area = areas.find(a => a.id === m.areaId);
+                const area = AREAS.find(a => a.id === m.areaId);
 
                 function ensureSpace(h) {
                     if (y + h > bottomLimit) { doc.addPage(); y = 20; }
@@ -2495,7 +2511,7 @@
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(9);
                 doc.setTextColor(0, 230, 118);
-                doc.text(`Manual ${m.num}  |  Area: ${area ? area.name : 'Geral'}${m.submodule && m.submodule !== 'Geral' ? ' › ' + m.submodule : ''}`, marginX, 18);
+                doc.text(`Manual ${m.num}  |  Modulo: ${area ? area.name : 'Geral'}${m.submodule && m.submodule !== 'Geral' ? ' › ' + m.submodule : ''}`, marginX, 18);
 
                 y = 33;
                 write(m.title, 16, true, [15, 23, 42]);
